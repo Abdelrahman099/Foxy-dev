@@ -1,0 +1,210 @@
+{
+  "basics": {
+    "name": "Foxy Developer",
+    "title": "Full Stack Developer",
+    "summary": "Passionate full-stack developer with expertise in modern web technologies. I create responsive, user-friendly applications with clean code and innovative solutions.",
+    "email": "contact@foxydev.com",
+    "phone": "+1 (555) 123-4567",
+    "website": "https://foxydev.com",
+    "location": {
+      "city": "San Francisco",
+      "country": "USA"
+    },
+    "profiles": [
+      {
+        "network": "GitHub",
+        "username": "foxydev",
+        "url": "https://github.com/foxydev"
+      },
+      {
+        "network": "LinkedIn",
+        "username": "foxydev",
+        "url": "https://linkedin.com/in/foxydev"
+      },
+      {
+        "network": "Twitter",
+        "username": "foxydev",
+        "url": "https://twitter.com/foxydev"
+      }
+    ]
+  },
+  "skills": [
+    {
+      "name": "Frontend Development",
+      "level": "Expert",
+      "keywords": ["React", "Vue.js", "Angular", "JavaScript", "TypeScript", "HTML5", "CSS3", "SASS"]
+    },
+    {
+      "name": "Backend Development",
+      "level": "Advanced",
+      "keywords": ["Node.js", "Express", "Django", "Flask", "PHP", "Ruby on Rails"]
+    },
+    {
+      "name": "Database",
+      "level": "Advanced",
+      "keywords": ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Firebase"]
+    },
+    {
+      "name": "DevOps",
+      "level": "Intermediate",
+      "keywords": ["Docker", "Kubernetes", "AWS", "CI/CD", "Git", "GitHub Actions"]
+    },
+    {
+      "name": "Mobile Development",
+      "level": "Intermediate",
+      "keywords": ["React Native", "Flutter", "iOS", "Android"]
+    }
+  ],
+  "projects": [
+    {
+      "name": "E-Commerce Platform",
+      "description": "A full-featured e-commerce platform with product management, cart functionality, payment processing, and order tracking.",
+      "highlights": ["React", "Node.js", "MongoDB", "Stripe API", "AWS"],
+      "url": "https://ecommerce-project.foxydev.com",
+      "github": "https://github.com/foxydev/ecommerce-platform",
+      "image": "ecommerce-project.jpg"
+    },
+    {
+      "name": "Task Management App",
+      "description": "A collaborative task management application with real-time updates, team workspaces, and progress tracking.",
+      "highlights": ["Vue.js", "Express", "Socket.io", "PostgreSQL"],
+      "url": "https://tasks.foxydev.com",
+      "github": "https://github.com/foxydev/task-manager",
+      "image": "task-manager.jpg"
+    },
+    {
+      "name": "Health & Fitness Tracker",
+      "description": "A comprehensive health and fitness tracking application with workout plans, nutrition logging, and progress visualization.",
+      "highlights": ["React Native", "Firebase", "Chart.js", "Google Fit API"],
+      "url": "https://fitness.foxydev.com",
+      "github": "https://github.com/foxydev/fitness-tracker",
+      "image": "fitness-tracker.jpg"
+    },
+    {
+      "name": "Real Estate Marketplace",
+      "description": "A platform connecting property buyers, sellers, and agents with property listings, virtual tours, and mortgage calculators.",
+      "highlights": ["Angular", "Django", "PostgreSQL", "Google Maps API"],
+      "url": "https://realestate.foxydev.com",
+      "github": "https://github.com/foxydev/real-estate",
+      "image": "real-estate.jpg"
+    }
+  ],
+  "education": [
+    {
+      "institution": "Stanford University",
+      "area": "Computer Science",
+      "studyType": "Master's Degree",
+      "startDate": "2018-09-01",
+      "endDate": "2020-06-01",
+      "gpa": "3.8",
+      "courses": [
+        "Advanced Algorithms",
+        "Machine Learning",
+        "Web Development",
+        "Database Systems",
+        "Software Engineering"
+      ]
+    },
+    {
+      "institution": "University of California, Berkeley",
+      "area": "Computer Engineering",
+      "studyType": "Bachelor's Degree",
+      "startDate": "2014-09-01",
+      "endDate": "2018-06-01",
+      "gpa": "3.7",
+      "courses": [
+        "Data Structures",
+        "Computer Architecture",
+        "Operating Systems",
+        "Programming Languages",
+        "Human-Computer Interaction"
+      ]
+    }
+  ],
+  "work": [
+    {
+      "company": "Tech Innovations Inc.",
+      "position": "Senior Full Stack Developer",
+      "website": "https://techinnovations.com",
+      "startDate": "2020-07-01",
+      "endDate": "Present",
+      "summary": "Lead developer for multiple high-traffic web applications, managing a team of 5 developers.",
+      "highlights": [
+        "Redesigned the company's flagship product, increasing user engagement by 40%",
+        "Implemented CI/CD pipeline, reducing deployment time by 60%",
+        "Mentored junior developers and conducted code reviews"
+      ]
+    },
+    {
+      "company": "Digital Solutions LLC",
+      "position": "Full Stack Developer",
+      "website": "https://digitalsolutions.com",
+      "startDate": "2018-06-01",
+      "endDate": "2020-06-30",
+      "summary": "Developed and maintained web applications for clients across various industries.",
+      "highlights": [
+        "Built responsive web applications using React and Node.js",
+        "Optimized database queries, improving application performance by 30%",
+        "Collaborated with UX/UI designers to implement user-friendly interfaces"
+      ]
+    },
+    {
+      "company": "WebTech Startup",
+      "position": "Frontend Developer Intern",
+      "website": "https://webtech.com",
+      "startDate": "2017-05-01",
+      "endDate": "2018-05-31",
+      "summary": "Assisted in the development of the company's web platform.",
+      "highlights": [
+        "Developed responsive UI components using React",
+        "Participated in daily stand-ups and sprint planning",
+        "Contributed to the company's component library"
+      ]
+    }
+  ],
+  "languages": [
+    {
+      "language": "English",
+      "fluency": "Native"
+    },
+    {
+      "language": "Spanish",
+      "fluency": "Professional"
+    },
+    {
+      "language": "Arabic",
+      "fluency": "Conversational"
+    }
+  ],
+  "interests": [
+    {
+      "name": "Open Source",
+      "keywords": ["Contributing to open-source projects", "Building developer tools"]
+    },
+    {
+      "name": "Technology",
+      "keywords": ["AI/ML", "Blockchain", "IoT"]
+    },
+    {
+      "name": "Outdoor Activities",
+      "keywords": ["Hiking", "Rock Climbing", "Photography"]
+    }
+  ],
+  "certificates": [
+    {
+      "name": "AWS Certified Solutions Architect",
+      "issuer": "Amazon Web Services",
+      "date": "2021-03-15"
+    },
+    {
+      "name": "Google Cloud Professional Developer",
+      "issuer": "Google",
+      "date": "2020-11-10"
+    },
+    {
+      "name": "MongoDB Certified Developer",
+      "issuer": "MongoDB Inc.",
+      "date": "2019-08-22"
+    }
+  ]
+}

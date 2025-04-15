@@ -1,0 +1,59 @@
+{
+  "header": {
+    "home": "Home",
+    "projects": "Projects",
+    "skills": "Skills",
+    "education": "Education",
+    "contact": "Contact"
+  },
+  "hero": {
+    "greeting": "Hello, I'm",
+    "title": "Full Stack Developer",
+    "cta": "View My Work"
+  },
+  "about": {
+    "title": "About Me",
+    "description": "Passionate full-stack developer with expertise in modern web technologies. I create responsive, user-friendly applications with clean code and innovative solutions."
+  },
+  "projects": {
+    "title": "My Projects",
+    "viewProject": "View Project",
+    "viewCode": "View Code"
+  },
+  "skills": {
+    "title": "My Skills",
+    "frontend": "Frontend Development",
+    "backend": "Backend Development",
+    "database": "Database",
+    "devops": "DevOps",
+    "mobile": "Mobile Development"
+  },
+  "education": {
+    "title": "Education",
+    "degree": "Degree",
+    "courses": "Courses"
+  },
+  "experience": {
+    "title": "Work Experience",
+    "present": "Present"
+  },
+  "contact": {
+    "title": "Get In Touch",
+    "name": "Name",
+    "email": "Email",
+    "message": "Message",
+    "send": "Send Message"
+  },
+  "footer": {
+    "rights": "All Rights Reserved",
+    "madeWith": "Made with"
+  },
+  "theme": {
+    "light": "Light Mode",
+    "dark": "Dark Mode"
+  },
+  "language": {
+    "en": "English",
+    "ar": "Arabic"
+  }
+}
