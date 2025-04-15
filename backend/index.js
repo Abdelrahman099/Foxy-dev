@@ -13,6 +13,7 @@ app.use(express.json());
 // Read profile data
 const profileData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'profile.json'), 'utf8'));
 
+
 // API Routes
 app.get('/api/profile', (req, res) => {
   res.json(profileData);
