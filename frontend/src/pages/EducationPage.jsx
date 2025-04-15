@@ -69,9 +69,9 @@ const TimelineDot = styled(motion.div)`
   height: 20px;
   border-radius: 50%;
   background-color: var(--accent);
-  left: 50%;
+ left: calc(50% - 10px);
   top: 2rem;
-  transform: translateX(-50%);
+
   z-index: 2;
   
   @media (max-width: 768px) {
