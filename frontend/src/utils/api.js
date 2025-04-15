@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-const API_URL = 'https://foxy-dev-abdelrahman099s-projects.vercel.app/api';
+const API_URL = 'https://foxy-pxz13qor5-abdelrahman099s-projects.vercel.app/api';
 
 export const fetchProfile = async () => {
   try {
