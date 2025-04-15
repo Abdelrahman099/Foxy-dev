@@ -286,7 +286,7 @@ const HomePage = () => {
             {basics?.summary || t('about.description')}
           </HeroDescription>
           <ButtonContainer variants={itemVariants}>
-            <HaloButton as="a" href="#projects">
+            <HaloButton as="a" href="/projects">
               {t('hero.cta')}
             </HaloButton>
           </ButtonContainer>
