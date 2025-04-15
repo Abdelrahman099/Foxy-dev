@@ -30,17 +30,20 @@ const FooterTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 1rem;
   position: relative;
-  
+
   &:after {
     content: '';
     position: absolute;
     bottom: -0.5rem;
-    left: 0;
+    ${(props) => (props.dir === 'rtl' ? 'right: 0;' : 'left: 0;')}
     width: 30px;
     height: 2px;
     background-color: var(--accent);
   }
 `;
+
+
+
 
 const FooterLink = styled.a`
   color: var(--text-secondary);
@@ -98,7 +101,7 @@ const Footer = () => {
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle>Foxy Dev</FooterTitle>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Foxy Dev</FooterTitle>
           <p>Full Stack Developer specializing in modern web technologies and creating responsive, user-friendly applications.</p>
           <SocialLinks>
             <SocialIcon 
@@ -138,7 +141,7 @@ const Footer = () => {
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle>Quick Links</FooterTitle>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Quick Links</FooterTitle>
           <FooterLink href="/">Home</FooterLink>
           <FooterLink href="/projects">Projects</FooterLink>
           <FooterLink href="/skills">Skills</FooterLink>
@@ -147,7 +150,7 @@ const Footer = () => {
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle>Contact</FooterTitle>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Contact</FooterTitle>
           <p>Email: contact@foxydev.com</p>
           <p>Phone: +1 (555) 123-4567</p>
           <p>Location: San Francisco, USA</p>
