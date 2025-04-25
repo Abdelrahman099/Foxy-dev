@@ -1,7 +1,15 @@
 import axios from 'axios';
 
-const API_URL = 'http://localhost:5000/api';
+ 
+const PRODUCTION_URL = 'https://foxy-dev.vercel.app/api';
+const LOCAL_URL = 'http://localhost:5000/api';
 
+// Automatically detect environment
+const isDevelopment = typeof window !== 'undefined' && 
+  (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
+const API_URL = isDevelopment ? LOCAL_URL : PRODUCTION_URL;
+
+// ... existing code ...
 export const fetchProfile = async () => {
   try {
     const response = await axios.get(`${API_URL}/profile`);
