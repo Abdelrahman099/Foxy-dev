@@ -1,7 +1,7 @@
 import axios from 'axios';
 
  
-const PRODUCTION_URL = 'https://foxy-dev.vercel.app/api';
+const PRODUCTION_URL = 'https://foxy-backend.vercel.app/api';
 const LOCAL_URL = 'http://localhost:5000/api';
 
 // Automatically detect environment
