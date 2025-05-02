@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
+import { useTranslation } from 'react-i18next';
+import { fetchBasics } from '../utils/api';
+
 
 const FooterContainer = styled.footer`
   background-color: var(--bg-secondary);
@@ -30,17 +33,20 @@ const FooterTitle = styled.h3`
   font-size: 1.2rem;
   margin-bottom: 1rem;
   position: relative;
-  
+
   &:after {
     content: '';
     position: absolute;
     bottom: -0.5rem;
-    left: 0;
+    ${(props) => (props.dir === 'rtl' ? 'right: 0;' : 'left: 0;')}
     width: 30px;
     height: 2px;
     background-color: var(--accent);
   }
 `;
+
+
+
 
 const FooterLink = styled.a`
   color: var(--text-secondary);
@@ -91,14 +97,36 @@ const iconVariants = {
   }
 };
 
+
 const Footer = () => {
   const currentYear = new Date().getFullYear();
+  const { t } = useTranslation();
+  const [basics, setBasics] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  
+  useEffect(() => {
+    const getBasics = async () => {
+      try {
+        setLoading(true);
+        const data = await fetchBasics();
+        setBasics(data);
+        setLoading(false);
+      } catch (error) {
+        console.error('Failed to fetch basic profile data:', error);
+        setError('Failed to load profile data. Please try again later.');
+        setLoading(false);
+      }
+    };
+  
+    getBasics();
+  }, []);
   
   return (
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle>Foxy Dev</FooterTitle>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Foxy Dev</FooterTitle>
           <p>Full Stack Developer specializing in modern web technologies and creating responsive, user-friendly applications.</p>
           <SocialLinks>
             <SocialIcon 
@@ -138,24 +166,24 @@ const Footer = () => {
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle>Quick Links</FooterTitle>
-          <FooterLink href="/">Home</FooterLink>
-          <FooterLink href="/projects">Projects</FooterLink>
-          <FooterLink href="/skills">Skills</FooterLink>
-          <FooterLink href="/education">Education</FooterLink>
-          <FooterLink href="/contact">Contact</FooterLink>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Quick Links</FooterTitle>
+          <FooterLink href="/">{t('header.home')}</FooterLink>
+          <FooterLink href="/projects">{t('header.projects')}</FooterLink>
+          <FooterLink href="/skills">{t('header.skills')}</FooterLink>
+          <FooterLink href="/education">{t('header.education')}</FooterLink>
+          <FooterLink href="/contact">{t('header.contact')}</FooterLink>
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle>Contact</FooterTitle>
-          <p>Email: contact@foxydev.com</p>
-          <p>Phone: +1 (555) 123-4567</p>
-          <p>Location: San Francisco, USA</p>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Contact</FooterTitle>
+          <p>{basics?.email}</p>
+          <p>Phone: {basics?.phone}</p>
+          <p>Location: {basics?.location.city}, {basics?.location.country}</p>
         </FooterSection>
       </FooterContent>
       
       <Copyright>
-        <p>&copy; {currentYear} Foxy Dev. All Rights Reserved.</p>
+        <p>&copy; {currentYear} {t('footer.rights')}</p>
       </Copyright>
     </FooterContainer>
   );

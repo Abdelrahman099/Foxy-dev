@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import HaloButton from '../components/HaloButton';
-
+import emailjs from 'emailjs-com';
 const ContactSection = styled.section`
   padding: 5rem 2rem;
   max-width: 1200px;
@@ -226,16 +226,27 @@ const ContactPage = () => {
   });
   
   const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
+    setFormData({ ...formData, [e.target.name]: e.target.value });
   };
-  
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    // Form submission logic would go here
-    console.log(formData);
-    alert('Message sent successfully!');
-    setFormData({ name: '', email: '', message: '' });
+
+    emailjs.send(
+      'service_2jrqnhs',     // ← استبدله بـ service ID بتاعك
+      'template_oimqkox',    // ← استبدله بـ template ID بتاعك
+      formData,
+      '80pm737xxb2X0XayM'      // ← استبدله بـ public key (user ID سابقًا)
+    )
+    .then((result) => {
+      console.log('SUCCESS!', result.text);
+      alert('تم إرسال الرسالة بنجاح!');
+      setFormData({ name: '', email: '', message: '' });
+    })
+    .catch((error) => {
+      console.log('FAILED...', error.text);
+      alert('في مشكلة أثناء الإرسال.');
+    });
   };
   
   return (
@@ -374,3 +385,16 @@ const ContactPage = () => {
 };
 
 export default ContactPage;
+
+
+
+
+
+
+
+
+
+
+
+
+

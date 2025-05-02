@@ -11,13 +11,14 @@ const ButtonContainer = styled(motion.button)`
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color var(--transition-speed) ease;
+  transition: background-color var(--transition-speed) 0.1s ease;
   position: relative;
   overflow: hidden;
   z-index: 1;
   
   &:hover {
-    background-color: var(--accent-hover);
+    background-color: var( --card-shadow-dark);
+    
   }
   
   &:before {

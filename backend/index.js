@@ -6,14 +6,16 @@ const path = require('path');
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-// Middleware
+
 app.use(cors());
 app.use(express.json());
 
-// Read profile data
+
 const profileData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'profile.json'), 'utf8'));
 
-// API Routes
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
+
+
 app.get('/api/profile', (req, res) => {
   res.json(profileData);
 });
@@ -50,7 +52,7 @@ app.get('/api/profile/certificates', (req, res) => {
   res.json(profileData.certificates);
 });
 
-// Start server
+// Start server :3 
 app.listen(PORT, () => {
   console.log(`Server running on port ${PORT}`);
 });

@@ -3,12 +3,16 @@
     "name": "Foxy Developer",
     "title": "Full Stack Developer",
     "summary": "Passionate full-stack developer with expertise in modern web technologies. I create responsive, user-friendly applications with clean code and innovative solutions.",
-    "email": "contact@foxydev.com",
-    "phone": "+1 (555) 123-4567",
+    "email": "abdelrahman.osama.099@gmail.com",
+        "description": {
+        "ar": "أنا مطور ويب شامل شغوف، لدي خبرة واسعة في أحدث تقنيات الويب. أمتلك أساسًا قويًا في تطوير الواجهة الأمامية والخلفية، وأقوم بإنشاء تطبيقات تفاعلية وسهلة الاستخدام بكود نظيف وحلول مبتكرة.\nبدأت رحلتي في مجال تطوير البرمجيات خلال دراستي في جامعة مصر، حيث حصلت على درجة الماجستير في علوم الحاسوب. منذ ذلك الحين، عملت على استخدام تقنيات وأطر عمل متنوعة لبناء تطبيقات ويب قابلة للتوسع وفعالة.\nأؤمن بأهمية التعلم المستمر ومواكبة أحدث اتجاهات الصناعة. هدفي هو إنشاء تجارب رقمية ذات معنى تُسهم في حل مشكلات واقعية وتضيف قيمة حقيقية للمستخدمين.\nعندما لا أكون مشغولًا في البرمجة، تجدني أساهم في مشاريع مفتوحة المصدر، أو أستكشف تقنيات جديدة، أو أمارس أنشطة خارجية مثل التسلق والمشي في الطبيعة.",
+        "en": "I'm a passionate full-stack developer with expertise in modern web technologies. With a strong foundation in both frontend and backend development, I create responsive, user-friendly applications with clean code and innovative solutions.\nMy journey in software development began during my studies at Egypt University, where I earned my Master's degree in Computer Science. Since then, I've worked with various technologies and frameworks to build scalable and efficient web applications.\nI believe in continuous learning and staying updated with the latest industry trends. My goal is to create meaningful digital experiences that solve real-world problems and provide value to users.\nWhen I'm not coding, you can find me contributing to open-source projects, exploring new technologies, or enjoying outdoor activities like hiking and rock climbing."
+      },
+    "phone": "+20 100 9923849",
     "website": "https://foxydev.com",
     "location": {
-      "city": "San Francisco",
-      "country": "USA"
+      "city": "Egypt",
+      "country": "Cairo"
     },
     "profiles": [
       {
@@ -37,66 +41,72 @@
     {
       "name": "Backend Development",
       "level": "Advanced",
-      "keywords": ["Node.js", "Express", "Django", "Flask", "PHP", "Ruby on Rails"]
+      "keywords": ["Node.js", "Express", "Django", "Flask", "PHP", "Java"]
     },
     {
       "name": "Database",
       "level": "Advanced",
-      "keywords": ["MongoDB", "PostgreSQL", "MySQL", "Redis", "Firebase"]
+      "keywords": ["MongoDB", "PostgreSQL", "MySQL", "Firebase"]
     },
     {
       "name": "DevOps",
       "level": "Intermediate",
-      "keywords": ["Docker", "Kubernetes", "AWS", "CI/CD", "Git", "GitHub Actions"]
+      "keywords": ["Docker", "AWS", "CI/CD", "Git", "GitHub Actions"]
     },
     {
       "name": "Mobile Development",
-      "level": "Intermediate",
+      "level": "Beginner",
       "keywords": ["React Native", "Flutter", "iOS", "Android"]
+    },
+    {
+      "name": "CMS Development",
+      "level": "Expert",
+      "keywords": ["Wordpress", "Plugin Development", "SEO", "Theme Customization"]
     }
+    
   ],
   "projects": [
     {
       "name": "E-Commerce Platform",
       "description": "A full-featured e-commerce platform with product management, cart functionality, payment processing, and order tracking.",
       "highlights": ["React", "Node.js", "MongoDB", "Stripe API", "AWS"],
-      "url": "https://ecommerce-project.foxydev.com",
-      "github": "https://github.com/foxydev/ecommerce-platform",
-      "image": "ecommerce-project.jpg"
+      "url": "https://wall8y.com/",
+     
+      "image": "/images/Wally.png"
     },
     {
-      "name": "Task Management App",
-      "description": "A collaborative task management application with real-time updates, team workspaces, and progress tracking.",
-      "highlights": ["Vue.js", "Express", "Socket.io", "PostgreSQL"],
-      "url": "https://tasks.foxydev.com",
+      "name": "5Minvestment",
+     "description": "This is a company profile for 5min Investment — a collaborative task management and communication platform tailored for long-term investment planning.",
+      "highlights": ["Wordpress", "Animate.js", "scrolltrigger.js", "SQL","PHP","Plugin Development"],
+      "url": "https://5minvestment.com/",
       "github": "https://github.com/foxydev/task-manager",
-      "image": "task-manager.jpg"
+      "image": "/images/5mininv.png"
     },
     {
-      "name": "Health & Fitness Tracker",
-      "description": "A comprehensive health and fitness tracking application with workout plans, nutrition logging, and progress visualization.",
-      "highlights": ["React Native", "Firebase", "Chart.js", "Google Fit API"],
-      "url": "https://fitness.foxydev.com",
+      "name": "Mr Foxy",
+      "description": "Mr Foxy is a modern and responsive developer portfolio built with cutting-edge technologies including Vite and Node.js. It showcases my skills, projects, and experience in a visually appealing manner.",
+      "highlights": ["Vite", "Node.js", "Express", "Json", "Framer-motion", "styled.css"],
+      "url": "http://localhost:5173/",
       "github": "https://github.com/foxydev/fitness-tracker",
-      "image": "fitness-tracker.jpg"
+      "image": "/images/Mr-foxy.png"
     },
     {
       "name": "Real Estate Marketplace",
       "description": "A platform connecting property buyers, sellers, and agents with property listings, virtual tours, and mortgage calculators.",
-      "highlights": ["Angular", "Django", "PostgreSQL", "Google Maps API"],
+      "highlights": ["CMS", "Wordpress", "Javascript", "PHP","Plugin Development"],
       "url": "https://realestate.foxydev.com",
       "github": "https://github.com/foxydev/real-estate",
-      "image": "real-estate.jpg"
+      "image": "/images/Elite-homes.png"
     }
   ],
   "education": [
     {
-      "institution": "Stanford University",
+      "institution": "London south Bank",
       "area": "Computer Science",
       "studyType": "Master's Degree",
       "startDate": "2018-09-01",
-      "endDate": "2020-06-01",
-      "gpa": "3.8",
+      "endDate": "2022-06-01",
+      "gpa": "3.1",
       "courses": [
         "Advanced Algorithms",
         "Machine Learning",
@@ -106,12 +116,12 @@
       ]
     },
     {
-      "institution": "University of California, Berkeley",
+      "institution": "Britsh university in Egypt",
       "area": "Computer Engineering",
       "studyType": "Bachelor's Degree",
-      "startDate": "2014-09-01",
-      "endDate": "2018-06-01",
-      "gpa": "3.7",
+      "startDate": "2018-09-01",
+      "endDate": "2022-06-01",
+      "gpa": "2.9",
       "courses": [
         "Data Structures",
         "Computer Architecture",
@@ -207,4 +217,7 @@
       "date": "2019-08-22"
     }
   ]
+
+
+
 }

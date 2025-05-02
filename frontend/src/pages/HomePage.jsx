@@ -110,6 +110,8 @@ const AboutText = styled.div`
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
+  line-height: 1.9;
+  padding: 1rem;
 `;
 
 const AboutImage = styled(motion.div)`
@@ -280,35 +282,24 @@ const HomePage = () => {
             {basics?.name || "Foxy Developer"}
           </HeroName>
           <HeroTitle variants={itemVariants}>
-            {basics?.title || t('hero.title')}
+            { t('hero.title')}
           </HeroTitle>
           <HeroDescription variants={itemVariants}>
-            {basics?.summary || t('about.description')}
+            { t('about.description')}
           </HeroDescription>
           <ButtonContainer variants={itemVariants}>
-            <HaloButton as="a" href="#projects">
+            <HaloButton as="a" href="/projects">
               {t('hero.cta')}
             </HaloButton>
           </ButtonContainer>
         </HeroContent>
       </HeroSection>
       
-      <AboutSection id="about">
+      <AboutSection id="about" >
         <SectionTitle>{t('about.title')}</SectionTitle>
         <AboutContent>
           <AboutText>
-            <p>
-              I'm a passionate full-stack developer with expertise in modern web technologies. With a strong foundation in both frontend and backend development, I create responsive, user-friendly applications with clean code and innovative solutions.
-            </p>
-            <p>
-              My journey in software development began during my studies at {basics?.location?.city || "Stanford"} University, where I earned my Master's degree in Computer Science. Since then, I've worked with various technologies and frameworks to build scalable and efficient web applications.
-            </p>
-            <p>
-              I believe in continuous learning and staying updated with the latest industry trends. My goal is to create meaningful digital experiences that solve real-world problems and provide value to users.
-            </p>
-            <p>
-              When I'm not coding, you can find me contributing to open-source projects, exploring new technologies, or enjoying outdoor activities like hiking and rock climbing.
-            </p>
+          {basics?.description?.[document.documentElement.lang === 'ar' ? 'ar' : 'en']}
           </AboutText>
           <AboutImage 
             className="halo-effect"
