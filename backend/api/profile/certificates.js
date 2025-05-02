@@ -19,7 +19,7 @@ export default function handler(req, res) {
     const dataPath = path.join(__dirname, '..', '..', 'data', 'profile.json');
     const file = fs.readFileSync(dataPath, 'utf8');
     const profile = JSON.parse(file);
-    return res.status(200).json(profile.basics);
+    return res.status(200).json(profile.certificates);
   } catch (err) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }

@@ -9,6 +9,22 @@ const isDevelopment = typeof window !== 'undefined' &&
   (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1');
 const API_URL = isDevelopment ? LOCAL_URL : PRODUCTION_URL;
 
+// Helper function to convert image paths to proper URLs
+export const getImageUrl = (imagePath) => {
+  if (!imagePath) return null;
+  
+  // If it's already a full URL, return it as is
+  if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
+    return imagePath;
+  }
+  
+  // Extract the image name from the path (remove leading '/images/')
+  const imageName = imagePath.replace(/^\/images\//, '');
+  
+  // Construct the proper API URL for the image
+  return `${API_URL}/images/${imageName}`;
+};
+
 // ... existing code ...
 export const fetchProfile = async () => {
   try {

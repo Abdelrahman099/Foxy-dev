@@ -72,7 +72,7 @@
       "highlights": ["React", "Node.js", "MongoDB", "Stripe API", "AWS"],
       "url": "https://wall8y.com/",
      
-      "image": "public/images/Wally.png"
+      "image": "/images/Wally.png"
     },
     {
       "name": "5Minvestment",
@@ -80,7 +80,7 @@
       "highlights": ["Wordpress", "Animate.js", "scrolltrigger.js", "SQL","PHP","Plugin Development"],
       "url": "https://5minvestment.com/",
       "github": "https://github.com/foxydev/task-manager",
-      "image": "public/images/5mininv.png"
+      "image": "/images/5mininv.png"
     },
     {
       "name": "Mr Foxy",
@@ -88,7 +88,7 @@
       "highlights": ["Vite", "Node.js", "Express", "Json", "Framer-motion", "styled.css"],
       "url": "http://localhost:5173/",
       "github": "https://github.com/foxydev/fitness-tracker",
-      "image": "public/images/Mr-foxy.png"
+      "image": "/images/Mr-foxy.png"
     },
     {
       "name": "Real Estate Marketplace",
@@ -96,7 +96,7 @@
       "highlights": ["CMS", "Wordpress", "Javascript", "PHP","Plugin Development"],
       "url": "https://realestate.foxydev.com",
       "github": "https://github.com/foxydev/real-estate",
-      "image": "public/images/Elite-homes.png"
+      "image": "/images/Elite-homes.png"
     }
   ],
   "education": [
