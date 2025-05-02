@@ -1,5 +1,5 @@
 import React, { useContext, useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink as RouterNavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -47,7 +47,7 @@ const NavLinks = styled.nav`
   }
 `;
 
-const StyledNavLink = styled(NavLink)`
+const StyledNavLink = styled(RouterNavLink)`
   color: var(--text-primary);
   font-weight: 500;
   transition: color var(--transition-speed) ease;
@@ -120,7 +120,7 @@ const MobileMenu = styled(motion.div)`
   border-top: 1px solid var(--border);
 `;
 
-const MobileNavLink = styled(NavLink)`
+const MobileNavLink = styled(RouterNavLink)`
   color: var(--text-primary);
   font-weight: 500;
   padding: 0.75rem 1rem;
