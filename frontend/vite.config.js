@@ -9,4 +9,12 @@ export default defineConfig({
     target: 'es2015',
     outDir: 'dist',
   },
+  
+  // Add proper SPA handling for production
+  server: {
+    historyApiFallback: true,
+  },
+  
+  // Ensure proper base path
+  base: '/',
 })

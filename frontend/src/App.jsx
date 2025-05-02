@@ -1,5 +1,5 @@
 import React from 'react';
-import { BrowserRouter, Routes, Route } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, HashRouter } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
@@ -17,7 +17,8 @@ function App() {
     <ThemeProvider>
       <LanguageProvider>
         <GlobalStyles />
-        <BrowserRouter>
+        {/* Using HashRouter for better compatibility with static hosting and mobile */}
+        <HashRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
@@ -27,7 +28,7 @@ function App() {
               <Route path="contact" element={<ContactPage />} />
             </Route>
           </Routes>
-        </BrowserRouter>
+        </HashRouter>
       </LanguageProvider>
     </ThemeProvider>
   );
