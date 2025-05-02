@@ -1,12 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link ,NavLink} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../context/ThemeContext';
 import { LanguageContext } from '../context/LanguageContext';
 import HaloIcon from './HaloIcon';
-import { NavLink } from 'react-router-dom';
+
 
 const HeaderContainer = styled(motion.header)`
   position: fixed;
