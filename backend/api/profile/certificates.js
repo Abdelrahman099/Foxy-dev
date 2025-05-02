@@ -16,10 +16,10 @@ export default function handler(req, res) {
 
   // 3) Now handle the real GET
   try {
-    const dataPath = path.join(__dirname, '..', 'data', 'profile.json');
+    const dataPath = path.join(__dirname, '..', '..', 'data', 'profile.json');
     const file = fs.readFileSync(dataPath, 'utf8');
     const profile = JSON.parse(file);
-    return res.status(200).json(profile);
+    return res.status(200).json(profile.certificates);
   } catch (err) {
     return res.status(500).json({ error: 'Internal Server Error' });
   }

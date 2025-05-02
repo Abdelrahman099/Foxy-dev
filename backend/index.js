@@ -13,6 +13,7 @@ app.use(express.json());
 
 const profileData = JSON.parse(fs.readFileSync(path.join(__dirname, 'data', 'profile.json'), 'utf8'));
 
+app.use('/images', express.static(path.join(__dirname, 'public/images')));
 
 
 app.get('/api/profile', (req, res) => {

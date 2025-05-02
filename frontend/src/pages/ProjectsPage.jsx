@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import HaloCard from '../components/HaloCard';
-import { fetchProjects } from '../utils/api';
+import { fetchProjects, getImageUrl } from '../utils/api';
 
 const ProjectsSection = styled.section`
   padding: 5rem 2rem;
@@ -215,7 +215,7 @@ const ProjectsPage = () => {
         {projects.map((project, index) => (
           <ProjectCard key={project.name} delay={index * 0.1}>
             <ProjectImage>
-              <img src={project.image || `https://source.unsplash.com/random/600x400?${project.name.replace(/\s+/g, ',')}`} alt={project.name} />
+              <img src={getImageUrl(project.image) || `https://source.unsplash.com/random/600x400?${project.name.replace(/\s+/g, ',')}`} alt={project.name} />
             </ProjectImage>
             <ProjectTitle>{project.name}</ProjectTitle>
             <ProjectDescription>{project.description}</ProjectDescription>
