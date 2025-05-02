@@ -1,11 +1,12 @@
 import React, { useContext, useState } from 'react';
-import { Link, NavLink as RouterNavLink } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { ThemeContext } from '../context/ThemeContext';
 import { LanguageContext } from '../context/LanguageContext';
 import HaloIcon from './HaloIcon';
+import { NavLink } from 'react-router-dom';
 
 const HeaderContainer = styled(motion.header)`
   position: fixed;
@@ -47,7 +48,7 @@ const NavLinks = styled.nav`
   }
 `;
 
-const StyledNavLink = styled(RouterNavLink)`
+const NavLinkStyled = styled(NavLink)`
   color: var(--text-primary);
   font-weight: 500;
   transition: color var(--transition-speed) ease;
@@ -120,7 +121,7 @@ const MobileMenu = styled(motion.div)`
   border-top: 1px solid var(--border);
 `;
 
-const MobileNavLink = styled(RouterNavLink)`
+const MobileNavLinkStyled = styled(NavLink)`
   color: var(--text-primary);
   font-weight: 500;
   padding: 0.75rem 1rem;
@@ -167,11 +168,11 @@ const Header = () => {
         </Logo>
         
         <NavLinks>
-          <StyledNavLink to="/">{t('header.home')}</StyledNavLink>
-          <StyledNavLink to="/projects">{t('header.projects')}</StyledNavLink>
-          <StyledNavLink to="/skills">{t('header.skills')}</StyledNavLink>
-          <StyledNavLink to="/education">{t('header.education')}</StyledNavLink>
-          <StyledNavLink to="/contact">{t('header.contact')}</StyledNavLink>
+          <NavLinkStyled to="/">{t('header.home')}</NavLinkStyled>
+          <NavLinkStyled to="/projects">{t('header.projects')}</NavLinkStyled>
+          <NavLinkStyled to="/skills">{t('header.skills')}</NavLinkStyled>
+          <NavLinkStyled to="/education">{t('header.education')}</NavLinkStyled>
+          <NavLinkStyled to="/contact">{t('header.contact')}</NavLinkStyled>
         </NavLinks>
         
         <Controls>
@@ -216,21 +217,21 @@ const Header = () => {
           exit={{ opacity: 0, y: -20 }}
           transition={{ duration: 0.2 }}
         >
-          <MobileNavLink to="/" onClick={() => setMobileMenuOpen(false)}>
+          <MobileNavLinkStyled to="/" onClick={() => setMobileMenuOpen(false)}>
             {t('header.home')}
-          </MobileNavLink>
-          <MobileNavLink to="/projects" onClick={() => setMobileMenuOpen(false)}>
+          </MobileNavLinkStyled>
+          <MobileNavLinkStyled to="/projects" onClick={() => setMobileMenuOpen(false)}>
             {t('header.projects')}
-          </MobileNavLink>
-          <MobileNavLink to="/skills" onClick={() => setMobileMenuOpen(false)}>
+          </MobileNavLinkStyled>
+          <MobileNavLinkStyled to="/skills" onClick={() => setMobileMenuOpen(false)}>
             {t('header.skills')}
-          </MobileNavLink>
-          <MobileNavLink to="/education" onClick={() => setMobileMenuOpen(false)}>
+          </MobileNavLinkStyled>
+          <MobileNavLinkStyled to="/education" onClick={() => setMobileMenuOpen(false)}>
             {t('header.education')}
-          </MobileNavLink>
-          <MobileNavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
+          </MobileNavLinkStyled>
+          <MobileNavLinkStyled to="/contact" onClick={() => setMobileMenuOpen(false)}>
             {t('header.contact')}
-          </MobileNavLink>
+          </MobileNavLinkStyled>
         </MobileMenu>
       )}
     </HeaderContainer>
