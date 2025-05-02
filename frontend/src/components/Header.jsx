@@ -1,5 +1,5 @@
-import React, { useContext } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext, useState } from 'react';
+import { Link, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
@@ -104,6 +104,34 @@ const MobileMenuButton = styled(ControlButton)`
   }
 `;
 
+const MobileMenu = styled(motion.div)`
+  position: fixed;
+  top: 70px;
+  left: 0;
+  right: 0;
+  background-color: var(--bg-primary);
+  padding: 1rem;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  z-index: 999;
+  border-top: 1px solid var(--border);
+`;
+
+const MobileNavLink = styled(NavLink)`
+  color: var(--text-primary);
+  font-weight: 500;
+  padding: 0.75rem 1rem;
+  border-radius: 8px;
+  transition: all var(--transition-speed) ease;
+  
+  &:hover, &.active {
+    color: var(--accent);
+    background-color: var(--bg-secondary);
+  }
+`;
+
 const headerVariants = {
   hidden: { y: -100 },
   visible: { 
@@ -120,6 +148,11 @@ const Header = () => {
   const { t } = useTranslation();
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const { language, toggleLanguage } = useContext(LanguageContext);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
+  };
   
   return (
     <HeaderContainer
@@ -163,13 +196,42 @@ const Header = () => {
             onClick={toggleLanguage}
           />
           
-          <MobileMenuButton>
+          <MobileMenuButton onClick={toggleMobileMenu}>
             <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor" width="24" height="24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              {mobileMenuOpen ? (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+              ) : (
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16M4 18h16" />
+              )}
             </svg>
           </MobileMenuButton>
         </Controls>
       </NavContainer>
+      
+      {mobileMenuOpen && (
+        <MobileMenu
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          exit={{ opacity: 0, y: -20 }}
+          transition={{ duration: 0.2 }}
+        >
+          <MobileNavLink to="/" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.home')}
+          </MobileNavLink>
+          <MobileNavLink to="/projects" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.projects')}
+          </MobileNavLink>
+          <MobileNavLink to="/skills" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.skills')}
+          </MobileNavLink>
+          <MobileNavLink to="/education" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.education')}
+          </MobileNavLink>
+          <MobileNavLink to="/contact" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.contact')}
+          </MobileNavLink>
+        </MobileMenu>
+      )}
     </HeaderContainer>
   );
 };

@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
+import { NavLink } from 'react-router-dom';
 import { fetchBasics } from '../utils/api';
 
 
@@ -48,11 +49,12 @@ const FooterTitle = styled.h3`
 
 
 
-const FooterLink = styled.a`
+const FooterLink = styled(NavLink)`
   color: var(--text-secondary);
   transition: color var(--transition-speed) ease;
+  text-decoration: none;
   
-  &:hover {
+  &:hover, &.active {
     color: var(--accent);
   }
 `;
@@ -167,11 +169,11 @@ const Footer = () => {
         
         <FooterSection>
           <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Quick Links</FooterTitle>
-          <FooterLink href="/">{t('header.home')}</FooterLink>
-          <FooterLink href="/projects">{t('header.projects')}</FooterLink>
-          <FooterLink href="/skills">{t('header.skills')}</FooterLink>
-          <FooterLink href="/education">{t('header.education')}</FooterLink>
-          <FooterLink href="/contact">{t('header.contact')}</FooterLink>
+          <FooterLink to="/">{t('header.home')}</FooterLink>
+          <FooterLink to="/projects">{t('header.projects')}</FooterLink>
+          <FooterLink to="/skills">{t('header.skills')}</FooterLink>
+          <FooterLink to="/education">{t('header.education')}</FooterLink>
+          <FooterLink to="/contact">{t('header.contact')}</FooterLink>
         </FooterSection>
         
         <FooterSection>
