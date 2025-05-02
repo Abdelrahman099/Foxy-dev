@@ -47,11 +47,12 @@ const NavLinks = styled.nav`
   }
 `;
 
-const NavLink = styled(Link)`
+const StyledNavLink = styled(NavLink)`
   color: var(--text-primary);
   font-weight: 500;
   transition: color var(--transition-speed) ease;
   position: relative;
+  text-decoration: none;
   
   &:after {
     content: '';
@@ -166,11 +167,11 @@ const Header = () => {
         </Logo>
         
         <NavLinks>
-          <NavLink to="/">{t('header.home')}</NavLink>
-          <NavLink to="/projects">{t('header.projects')}</NavLink>
-          <NavLink to="/skills">{t('header.skills')}</NavLink>
-          <NavLink to="/education">{t('header.education')}</NavLink>
-          <NavLink to="/contact">{t('header.contact')}</NavLink>
+          <StyledNavLink to="/">{t('header.home')}</StyledNavLink>
+          <StyledNavLink to="/projects">{t('header.projects')}</StyledNavLink>
+          <StyledNavLink to="/skills">{t('header.skills')}</StyledNavLink>
+          <StyledNavLink to="/education">{t('header.education')}</StyledNavLink>
+          <StyledNavLink to="/contact">{t('header.contact')}</StyledNavLink>
         </NavLinks>
         
         <Controls>
