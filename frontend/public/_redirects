@@ -1,1 +1,6 @@
+# Redirects from what the browser requests to what we serve
 /* /index.html 200
+/projects/* /index.html 200
+/skills/* /index.html 200
+/education/* /index.html 200
+/contact/* /index.html 200
