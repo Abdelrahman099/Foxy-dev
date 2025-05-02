@@ -21,6 +21,11 @@ export const getImageUrl = (imagePath) => {
   // Extract the image name from the path (remove leading '/images/')
   const imageName = imagePath.replace(/^\/images\//, '');
   
+  // For debugging
+  console.log('Original image path:', imagePath);
+  console.log('Extracted image name:', imageName);
+  console.log('Full image URL:', `${API_URL}/images/${imageName}`);
+  
   // Construct the proper API URL for the image
   return `${API_URL}/images/${imageName}`;
 };
