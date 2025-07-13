@@ -236,6 +236,7 @@ const ProjectsPage = () => {
                 </svg>
                 {t('projects.viewProject')}
               </ProjectLink>
+            {project.github ? (
               <ProjectLink 
                 href={project.github} 
                 target="_blank" 
@@ -247,6 +248,7 @@ const ProjectsPage = () => {
                 </svg>
                 {t('projects.viewCode')}
               </ProjectLink>
+            ) : null}
             </ProjectLinks>
           </ProjectCard>
         ))}
