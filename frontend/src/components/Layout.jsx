@@ -3,7 +3,7 @@ import { Outlet } from 'react-router-dom';
 import styled from 'styled-components';
 import Header from './Header';
 import Footer from './Footer';
-
+import CalltoCation from './CalltoCation';
 const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
@@ -23,6 +23,7 @@ const Layout = () => {
       <Main>
         <Outlet />
       </Main>
+      <CalltoCation />
       <Footer />
     </LayoutContainer>
   );
