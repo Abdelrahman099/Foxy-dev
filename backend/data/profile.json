@@ -154,7 +154,29 @@
         "Programming Languages",
         "Human-Computer Interaction"
       ]
+    },{
+      "institution": "DepI Egypt",
+      "area": "Full Stack Web Development",
+      "studyType": "Training Program",
+      "startDate": "2024-06-01",
+      "endDate": "2025-03-01",
+      "courses": [
+        "React",
+        "Hooks",
+        "Vite",
+        "Next.js",
+        "Node.js",
+        "Express",
+        "APIs",
+        "JWT Auth",
+        "Email.js",
+        "Excel Export",
+        "UI/UX",
+        "Routing",
+        "Deployment"
+      ]
     }
+    
   ],
   "work": [
     {
