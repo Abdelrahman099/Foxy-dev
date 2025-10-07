@@ -236,7 +236,7 @@ const ContactPage = () => {
       'service_2jrqnhs',     // ← استبدله بـ service ID بتاعك
       'template_oimqkox',    // ← استبدله بـ template ID بتاعك
       formData,
-      '80pm737xxb2X0XayM'      // ← استبدله بـ public key (user ID سابقًا)
+      'ohMOnYGhCCNs2EsP3'      // ← استبدله بـ public key (user ID سابقًا)
     )
     .then((result) => {
       console.log('SUCCESS!', result.text);
