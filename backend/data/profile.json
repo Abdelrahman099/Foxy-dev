@@ -66,14 +66,7 @@
     
   ],
   "projects": [
-    {
-      "name": "E-Commerce Platform",
-      "description": "A full-featured e-commerce platform with product management, cart functionality, payment processing, and order tracking.",
-      "highlights": ["React", "Node.js", "MongoDB", "Stripe API", "AWS"],
-      "url": "https://wall8y.com/",
-     
-      "image": "/images/Wally.png"
-    },
+
     {
       "name": "Red Development",
       "description": "A sleek real estate landing page created using React, Vite, and Tailwind CSS. Features smooth animations, responsive layouts, and user engagement forms powered by Email.js, with direct Excel export functionality.",
