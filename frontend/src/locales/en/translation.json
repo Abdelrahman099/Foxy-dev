@@ -17,6 +17,11 @@
   },
   "projects": {
     "title": "My Projects",
+    "eyebrow": "Selected Work",
+    "subtitle": "A collection of things I have designed, built and shipped.",
+    "all": "All",
+    "featured": "Featured",
+    "empty": "No projects match this filter yet.",
     "viewProject": "View Project",
     "viewCode": "View Code"
   },

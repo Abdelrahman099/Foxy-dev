@@ -3,22 +3,23 @@ import { motion } from 'framer-motion';
 import styled from 'styled-components';
 
 const ButtonContainer = styled(motion.button)`
-  background-color: var(--accent);
+  background: var(--gradient-accent);
   color: white;
   border: none;
-  padding: 0.75rem 1.5rem;
+  padding: 0.75rem 1.75rem;
   border-radius: 50px;
   font-weight: 600;
   font-size: 1rem;
   cursor: pointer;
-  transition: background-color var(--transition-speed) 0.1s ease;
+  transition: box-shadow var(--transition-speed) ease, filter var(--transition-speed) ease;
   position: relative;
   overflow: hidden;
   z-index: 1;
-  
+  box-shadow: var(--glow);
+
   &:hover {
-    background-color: var( --card-shadow-dark);
-    
+    filter: brightness(1.08);
+    box-shadow: var(--glow), var(--glow-2);
   }
   
   &:before {

@@ -32,7 +32,7 @@ const HeroGreeting = styled(motion.h2)`
 const HeroName = styled(motion.h1)`
   font-size: 4rem;
   margin-bottom: 1rem;
-  background: linear-gradient(90deg, var(--accent) 0%, #9c27b0 100%);
+  background: var(--gradient-accent);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;

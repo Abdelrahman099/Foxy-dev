@@ -4,10 +4,10 @@
     "title": "Full Stack Developer",
     "summary": "Passionate full-stack developer with expertise in modern web technologies. I create responsive, user-friendly applications with clean code and innovative solutions.",
     "email": "abdelrahman.osama.099@gmail.com",
-        "description": {
-        "ar": "أنا مطور ويب شامل شغوف، لدي خبرة واسعة في أحدث تقنيات الويب. أمتلك أساسًا قويًا في تطوير الواجهة الأمامية والخلفية، وأقوم بإنشاء تطبيقات تفاعلية وسهلة الاستخدام بكود نظيف وحلول مبتكرة.\nبدأت رحلتي في مجال تطوير البرمجيات خلال دراستي في جامعة مصر، حيث حصلت على درجة الماجستير في علوم الحاسوب. منذ ذلك الحين، عملت على استخدام تقنيات وأطر عمل متنوعة لبناء تطبيقات ويب قابلة للتوسع وفعالة.\nأؤمن بأهمية التعلم المستمر ومواكبة أحدث اتجاهات الصناعة. هدفي هو إنشاء تجارب رقمية ذات معنى تُسهم في حل مشكلات واقعية وتضيف قيمة حقيقية للمستخدمين.\nعندما لا أكون مشغولًا في البرمجة، تجدني أساهم في مشاريع مفتوحة المصدر، أو أستكشف تقنيات جديدة، أو أمارس أنشطة خارجية مثل التسلق والمشي في الطبيعة.",
-        "en": "I'm a passionate full-stack developer with expertise in modern web technologies. With a strong foundation in both frontend and backend development, I create responsive, user-friendly applications with clean code and innovative solutions.\nMy journey in software development began during my studies at Egypt University, where I earned my Master's degree in Computer Science. Since then, I've worked with various technologies and frameworks to build scalable and efficient web applications.\nI believe in continuous learning and staying updated with the latest industry trends. My goal is to create meaningful digital experiences that solve real-world problems and provide value to users.\nWhen I'm not coding, you can find me contributing to open-source projects, exploring new technologies, or enjoying outdoor activities like hiking and rock climbing."
-      },
+    "description": {
+      "ar": "أنا مطور ويب شامل شغوف، لدي خبرة واسعة في أحدث تقنيات الويب. أمتلك أساسًا قويًا في تطوير الواجهة الأمامية والخلفية، وأقوم بإنشاء تطبيقات تفاعلية وسهلة الاستخدام بكود نظيف وحلول مبتكرة.\nبدأت رحلتي في مجال تطوير البرمجيات خلال دراستي في جامعة مصر، حيث حصلت على درجة الماجستير في علوم الحاسوب. منذ ذلك الحين، عملت على استخدام تقنيات وأطر عمل متنوعة لبناء تطبيقات ويب قابلة للتوسع وفعالة.\nأؤمن بأهمية التعلم المستمر ومواكبة أحدث اتجاهات الصناعة. هدفي هو إنشاء تجارب رقمية ذات معنى تُسهم في حل مشكلات واقعية وتضيف قيمة حقيقية للمستخدمين.\nعندما لا أكون مشغولًا في البرمجة، تجدني أساهم في مشاريع مفتوحة المصدر، أو أستكشف تقنيات جديدة، أو أمارس أنشطة خارجية مثل التسلق والمشي في الطبيعة.",
+      "en": "I'm a passionate full-stack developer with expertise in modern web technologies. With a strong foundation in both frontend and backend development, I create responsive, user-friendly applications with clean code and innovative solutions.\nMy journey in software development began during my studies at Egypt University, where I earned my Master's degree in Computer Science. Since then, I've worked with various technologies and frameworks to build scalable and efficient web applications.\nI believe in continuous learning and staying updated with the latest industry trends. My goal is to create meaningful digital experiences that solve real-world problems and provide value to users.\nWhen I'm not coding, you can find me contributing to open-source projects, exploring new technologies, or enjoying outdoor activities like hiking and rock climbing."
+    },
     "phone": "+20 100 9923849",
     "website": "https://foxydev.com",
     "location": {
@@ -36,57 +36,112 @@
     {
       "name": "Frontend Development",
       "level": "Expert",
-      "keywords": ["React", "Vue.js", "Angular", "JavaScript", "TypeScript", "HTML5", "CSS3", "SASS"]
+      "keywords": [
+        "React",
+        "Vue.js",
+        "Angular",
+        "JavaScript",
+        "TypeScript",
+        "HTML5",
+        "CSS3",
+        "SASS"
+      ]
     },
     {
       "name": "Backend Development",
       "level": "Advanced",
-      "keywords": ["Node.js", "Express", "Django", "Flask", "PHP", "Java"]
+      "keywords": [
+        "Node.js",
+        "Express",
+        "Django",
+        "Flask",
+        "PHP",
+        "Java"
+      ]
     },
     {
       "name": "Database",
       "level": "Advanced",
-      "keywords": ["MongoDB", "PostgreSQL", "MySQL", "Firebase"]
+      "keywords": [
+        "MongoDB",
+        "PostgreSQL",
+        "MySQL",
+        "Firebase"
+      ]
     },
     {
       "name": "DevOps",
       "level": "Intermediate",
-      "keywords": ["Docker", "AWS", "CI/CD", "Git", "GitHub Actions"]
+      "keywords": [
+        "Docker",
+        "AWS",
+        "CI/CD",
+        "Git",
+        "GitHub Actions"
+      ]
     },
     {
       "name": "Mobile Development",
       "level": "Beginner",
-      "keywords": ["React Native", "Flutter", "iOS", "Android"]
+      "keywords": [
+        "React Native",
+        "Flutter",
+        "iOS",
+        "Android"
+      ]
     },
     {
       "name": "CMS Development",
       "level": "Expert",
-      "keywords": ["Wordpress", "Plugin Development", "SEO", "Theme Customization"]
+      "keywords": [
+        "Wordpress",
+        "Plugin Development",
+        "SEO",
+        "Theme Customization"
+      ]
     }
-    
   ],
   "projects": [
-
     {
       "name": "Red Development",
       "description": "A sleek real estate landing page created using React, Vite, and Tailwind CSS. Features smooth animations, responsive layouts, and user engagement forms powered by Email.js, with direct Excel export functionality.",
-      "highlights": ["React", "Vite", "Tailwind CSS", "Framer Motion", "ScrollTrigger.js", "Email.js", "Excel Export"],
+      "highlights": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Framer Motion",
+        "ScrollTrigger.js",
+        "Email.js",
+        "Excel Export"
+      ],
       "url": "https://www.redmindsdev.com/",
       "image": "/images/RedDev.png"
     },
-   
     {
       "name": "Mr Foxy",
       "description": "Mr Foxy is a modern and responsive developer portfolio built with cutting-edge technologies including Vite and Node.js. It showcases my skills, projects, and experience in a visually appealing manner.",
-      "highlights": ["Vite", "Node.js", "Express", "Json", "Framer-motion", "styled.css"],
+      "highlights": [
+        "Vite",
+        "Node.js",
+        "Express",
+        "Json",
+        "Framer-motion",
+        "styled.css"
+      ],
       "url": "http://localhost:5173/",
-      "github": "https://github.com/foxydev/fitness-tracker",
       "image": "/images/Mr-foxy.png"
     },
     {
       "name": "5Minvestment",
-     "description": "This is a company profile for 5min Investment — a collaborative task management and communication platform tailored for long-term investment planning.",
-      "highlights": ["Wordpress", "Animate.js", "scrolltrigger.js", "SQL","PHP","Plugin Development"],
+      "description": "This is a company profile for 5min Investment — a collaborative task management and communication platform tailored for long-term investment planning.",
+      "highlights": [
+        "Wordpress",
+        "Animate.js",
+        "scrolltrigger.js",
+        "SQL",
+        "PHP",
+        "Plugin Development"
+      ],
       "url": "https://5minvestment.com/",
       "github": "https://github.com/foxydev/task-manager",
       "image": "/images/5mininv.png"
@@ -94,28 +149,46 @@
     {
       "name": "Real Estate Marketplace",
       "description": "A platform connecting property buyers, sellers, and agents with property listings, virtual tours, and mortgage calculators.",
-      "highlights": ["CMS", "Wordpress", "Javascript", "PHP","Plugin Development"],
-      "url": "https://realestate.foxydev.com",
-      "github": "https://github.com/foxydev/real-estate",
+      "highlights": [
+        "CMS",
+        "Wordpress",
+        "Javascript",
+        "PHP",
+        "Plugin Development"
+      ],
+      "url": "https://elite-homes.net/",
       "image": "/images/Elite-homes.png"
-    }  ,
+    },
     {
       "name": "Mountain View",
       "description": "A modern, animated real estate landing page built with React, Vite, and Tailwind CSS. It collects user data via Email.js and exports to Excel without a backend.",
-      "highlights": ["React", "Vite", "Tailwind CSS", "Animate.js", "ScrollTrigger.js", "Email.js", "Excel Integration"],
+      "highlights": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Animate.js",
+        "ScrollTrigger.js",
+        "Email.js",
+        "Excel Integration"
+      ],
       "url": "https://mountainview.sale/",
-      "github": "https://github.com/foxydev/task-manager",
       "image": "/images/Mountine-view.png"
-    },  
-{
-  "name": "Acito",
-  "description": "An elegant, high-converting landing page for a premium real estate brand. Built with React and Tailwind CSS, with interactive animations and lead collection via Email.js and Excel export, all without a backend.",
-  "highlights": ["React", "Vite", "Tailwind CSS", "Animate.js", "GSAP", "Email.js", "No Backend Excel Export"],
-  "url": "https://redmindsdev.com/Actio/",
-  "image": "/images/Actio.png"
-}
-    
-    
+    },
+    {
+      "name": "Acito",
+      "description": "An elegant, high-converting landing page for a premium real estate brand. Built with React and Tailwind CSS, with interactive animations and lead collection via Email.js and Excel export, all without a backend.",
+      "highlights": [
+        "React",
+        "Vite",
+        "Tailwind CSS",
+        "Animate.js",
+        "GSAP",
+        "Email.js",
+        "No Backend Excel Export"
+      ],
+      "url": "https://redmindsdev.com/Actio/",
+      "image": "/images/Actio.png"
+    }
   ],
   "education": [
     {
@@ -147,7 +220,8 @@
         "Programming Languages",
         "Human-Computer Interaction"
       ]
-    },{
+    },
+    {
       "institution": "DepI Egypt",
       "area": "Full Stack Web Development",
       "studyType": "Training Program",
@@ -169,7 +243,6 @@
         "Deployment"
       ]
     }
-    
   ],
   "work": [
     {
@@ -229,15 +302,26 @@
   "interests": [
     {
       "name": "Open Source",
-      "keywords": ["Contributing to open-source projects", "Building developer tools"]
+      "keywords": [
+        "Contributing to open-source projects",
+        "Building developer tools"
+      ]
     },
     {
       "name": "Technology",
-      "keywords": ["AI/ML", "Blockchain", "IoT"]
+      "keywords": [
+        "AI/ML",
+        "Blockchain",
+        "IoT"
+      ]
     },
     {
       "name": "Outdoor Activities",
-      "keywords": ["Hiking", "Rock Climbing", "Photography"]
+      "keywords": [
+        "Hiking",
+        "Rock Climbing",
+        "Photography"
+      ]
     }
   ],
   "certificates": [
@@ -257,7 +341,4 @@
       "date": "2019-08-22"
     }
   ]
-
-
-
 }

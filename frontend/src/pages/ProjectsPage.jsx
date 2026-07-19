@@ -1,258 +1,393 @@
-import React, { useState, useEffect } from 'react';
+import React, { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import HaloCard from '../components/HaloCard';
-import { fetchProjects, getImageUrl } from '../utils/api';
+import { motion, AnimatePresence } from 'framer-motion';
+import { projects as projectsData } from '../data/projects';
+import { getImageUrl } from '../utils/api';
 
+/* ============================ Layout ============================ */
 const ProjectsSection = styled.section`
-  padding: 5rem 2rem;
+  padding: 7rem 2rem 5rem;
   max-width: 1200px;
   margin: 0 auto;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+const Header = styled.div`
   text-align: center;
   margin-bottom: 3rem;
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background-color: var(--accent);
+`;
+
+const Eyebrow = styled.span`
+  display: inline-block;
+  font-size: 0.8rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  margin-bottom: 0.75rem;
+`;
+
+const SectionTitle = styled.h2`
+  font-size: 2.75rem;
+  margin-bottom: 0.75rem;
+
+  @media (max-width: 768px) {
+    font-size: 2.1rem;
   }
 `;
 
-const ProjectsGrid = styled.div`
+const SubTitle = styled.p`
+  color: var(--text-secondary);
+  max-width: 560px;
+  margin: 0 auto;
+  font-size: 1.05rem;
+`;
+
+/* ============================ Filters ============================ */
+const Filters = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin: 2.5rem 0 3rem;
+`;
+
+const FilterChip = styled.button`
+  border: 1px solid ${({ $active }) => ($active ? 'transparent' : 'var(--border)')};
+  background: ${({ $active }) => ($active ? 'var(--gradient-accent)' : 'transparent')};
+  color: ${({ $active }) => ($active ? '#fff' : 'var(--text-secondary)')};
+  padding: 0.45rem 1.1rem;
+  border-radius: 50px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+
+  &:hover {
+    color: ${({ $active }) => ($active ? '#fff' : 'var(--accent)')};
+    border-color: ${({ $active }) => ($active ? 'transparent' : 'var(--accent)')};
+    transform: translateY(-2px);
+  }
+`;
+
+/* ============================ Grid & Card ============================ */
+const ProjectsGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-  gap: 2rem;
-  
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.8rem;
+
   @media (max-width: 768px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const ProjectCard = styled(HaloCard)`
+const Card = styled(motion.article)`
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  overflow: hidden;
+  box-shadow: var(--card-shadow);
+  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
+
+  /* animated gradient glow border on hover */
+  &::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1px;
+    background: var(--gradient-accent);
+    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    opacity: 0;
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
+
+  &:hover {
+    transform: translateY(-8px);
+    box-shadow: var(--card-shadow), var(--glow-2);
+  }
+
+  &:hover::before {
+    opacity: 1;
+  }
 `;
 
-const ProjectImage = styled.div`
-  height: 200px;
-  border-radius: 8px;
+const Media = styled.div`
+  position: relative;
+  height: 190px;
   overflow: hidden;
-  margin-bottom: 1.5rem;
-  
+  background: var(--gradient-accent-soft);
+
   img {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: transform 0.6s ease;
   }
-  
-  &:hover img {
-    transform: scale(1.05);
+
+  ${Card}:hover & img {
+    transform: scale(1.07);
+  }
+
+  /* fallback glyph when no image */
+  &::after {
+    content: '🦊';
+    position: absolute;
+    inset: 0;
+    display: ${({ $hasImage }) => ($hasImage ? 'none' : 'flex')};
+    align-items: center;
+    justify-content: center;
+    font-size: 3.5rem;
+    opacity: 0.5;
   }
 `;
 
+const IndexBadge = styled.span`
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  font-family: 'Space Grotesk', monospace;
+  font-size: 0.75rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  color: #fff;
+  background: rgba(10, 10, 18, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+`;
+
+const YearBadge = styled.span`
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 2;
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: #fff;
+  background: rgba(10, 10, 18, 0.55);
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  padding: 0.25rem 0.6rem;
+  border-radius: 8px;
+`;
+
+const FeaturedRibbon = styled.span`
+  position: absolute;
+  bottom: 12px;
+  left: 12px;
+  z-index: 2;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: #fff;
+  background: var(--gradient-accent);
+  padding: 0.28rem 0.7rem;
+  border-radius: 8px;
+  box-shadow: var(--glow);
+`;
+
+const Body = styled.div`
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 1.4rem 1.4rem 1.6rem;
+`;
+
 const ProjectTitle = styled.h3`
-  font-size: 1.5rem;
-  margin-bottom: 1rem;
+  font-size: 1.35rem;
+  margin-bottom: 0.6rem;
   color: var(--text-primary);
 `;
 
 const ProjectDescription = styled.p`
   color: var(--text-secondary);
-  margin-bottom: 1.5rem;
+  font-size: 0.92rem;
+  line-height: 1.6;
+  margin-bottom: 1.2rem;
   flex-grow: 1;
 `;
 
-const ProjectTags = styled.div`
+const Tags = styled.div`
   display: flex;
   flex-wrap: wrap;
-  gap: 0.5rem;
-  margin-bottom: 1.5rem;
+  gap: 0.4rem;
+  margin-bottom: 1.3rem;
 `;
 
-const ProjectTag = styled.span`
-  background-color: var(--bg-secondary);
-  color: var(--accent);
-  padding: 0.25rem 0.75rem;
+const Tag = styled.span`
+  background: var(--bg-secondary);
+  color: var(--accent-2);
+  padding: 0.22rem 0.65rem;
   border-radius: 50px;
-  font-size: 0.8rem;
-  font-weight: 500;
+  font-size: 0.72rem;
+  font-weight: 600;
+  border: 1px solid var(--border);
 `;
 
-const ProjectLinks = styled.div`
+const Links = styled.div`
   display: flex;
-  gap: 1rem;
+  gap: 0.75rem;
 `;
 
-const ProjectLink = styled(motion.a)`
+const PrimaryLink = styled(motion.a)`
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  color: var(--accent);
-  font-weight: 500;
-  transition: color var(--transition-speed) ease;
-  
-  &:hover {
-    color: var(--accent-hover);
-  }
-  
-  svg {
-    width: 18px;
-    height: 18px;
-  }
-`;
-
-const LoadingSpinner = styled(motion.div)`
-  display: flex;
+  gap: 0.4rem;
+  flex: 1;
   justify-content: center;
+  background: var(--gradient-accent);
+  color: #fff;
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+
+  &:hover { color: #fff; }
+  svg { width: 16px; height: 16px; }
+`;
+
+const GhostLink = styled(motion.a)`
+  display: inline-flex;
   align-items: center;
-  min-height: 200px;
-  
-  svg {
-    width: 50px;
-    height: 50px;
-    color: var(--accent);
-  }
+  gap: 0.4rem;
+  color: var(--text-primary);
+  font-weight: 600;
+  font-size: 0.85rem;
+  padding: 0.6rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+  transition: border-color 0.25s ease, color 0.25s ease;
+
+  &:hover { color: var(--accent); border-color: var(--accent); }
+  svg { width: 16px; height: 16px; }
 `;
 
-const ErrorMessage = styled.div`
+const EmptyState = styled.div`
   text-align: center;
-  color: #e74c3c;
-  padding: 2rem;
+  color: var(--text-secondary);
+  padding: 3rem;
 `;
 
-const containerVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.1,
-      delayChildren: 0.2
-    }
-  }
-};
+/* ============================ Icons ============================ */
+const ExternalIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
+  </svg>
+);
 
-const spinnerVariants = {
-  animate: {
-    rotate: 360,
-    transition: {
-      repeat: Infinity,
-      duration: 1,
-      ease: "linear"
-    }
-  }
-};
+const GithubIcon = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24">
+    <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
+  </svg>
+);
 
+/* ============================ Component ============================ */
 const ProjectsPage = () => {
   const { t } = useTranslation();
-  const [projects, setProjects] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [activeFilter, setActiveFilter] = useState('all');
 
-  useEffect(() => {
-    const getProjects = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchProjects();
-        setProjects(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch projects:', error);
-        setError('Failed to load projects. Please try again later.');
-        setLoading(false);
-      }
-    };
+  // featured projects float to the top
+  const sorted = useMemo(
+    () => [...projectsData].sort((a, b) => (b.featured ? 1 : 0) - (a.featured ? 1 : 0)),
+    []
+  );
 
-    getProjects();
+  // collect tags for the filter bar, ranked by how often they appear
+  const allTags = useMemo(() => {
+    const counts = {};
+    projectsData.forEach((p) => (p.tags || []).forEach((tag) => (counts[tag] = (counts[tag] || 0) + 1)));
+    return Object.keys(counts)
+      .sort((a, b) => counts[b] - counts[a])
+      .slice(0, 10);
   }, []);
 
-  if (loading) {
-    return (
-      <ProjectsSection>
-        <SectionTitle>{t('projects.title')}</SectionTitle>
-        <LoadingSpinner
-          variants={spinnerVariants}
-          animate="animate"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-        </LoadingSpinner>
-      </ProjectsSection>
-    );
-  }
-
-  if (error) {
-    return (
-      <ProjectsSection>
-        <SectionTitle>{t('projects.title')}</SectionTitle>
-        <ErrorMessage>{error}</ErrorMessage>
-      </ProjectsSection>
-    );
-  }
+  const visible = useMemo(
+    () =>
+      activeFilter === 'all'
+        ? sorted
+        : sorted.filter((p) => (p.tags || []).includes(activeFilter)),
+    [activeFilter, sorted]
+  );
 
   return (
     <ProjectsSection>
-      <SectionTitle>{t('projects.title')}</SectionTitle>
-      <ProjectsGrid
-        as={motion.div}
-        variants={containerVariants}
-        initial="hidden"
-        animate="visible"
-      >
-        {projects.map((project, index) => (
-          <ProjectCard key={project.name} delay={index * 0.1}>
-            <ProjectImage>
-              <img src={getImageUrl(project.image) || `https://source.unsplash.com/random/600x400?${project.name.replace(/\s+/g, ',')}`} alt={project.name} />
-            </ProjectImage>
-            <ProjectTitle>{project.name}</ProjectTitle>
-            <ProjectDescription>{project.description}</ProjectDescription>
-            <ProjectTags>
-              {project.highlights.map((tag, i) => (
-                <ProjectTag key={i}>{tag}</ProjectTag>
-              ))}
-            </ProjectTags>
-            <ProjectLinks>
-              <ProjectLink 
-                href={project.url} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                {t('projects.viewProject')}
-              </ProjectLink>
-            {project.github ? (
-              <ProjectLink 
-                href={project.github} 
-                target="_blank" 
-                rel="noopener noreferrer"
-                whileHover={{ scale: 1.05 }}
-              >
-                <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24" width="18" height="18">
-                  <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"/>
-                </svg>
-                {t('projects.viewCode')}
-              </ProjectLink>
-            ) : null}
-            </ProjectLinks>
-          </ProjectCard>
+      <Header>
+        <Eyebrow>{t('projects.eyebrow', 'Selected Work')}</Eyebrow>
+        <SectionTitle className="gradient-text">{t('projects.title')}</SectionTitle>
+        <SubTitle>{t('projects.subtitle', 'A collection of things I have designed, built and shipped.')}</SubTitle>
+      </Header>
+
+      <Filters>
+        <FilterChip $active={activeFilter === 'all'} onClick={() => setActiveFilter('all')}>
+          {t('projects.all', 'All')}
+        </FilterChip>
+        {allTags.map((tag) => (
+          <FilterChip key={tag} $active={activeFilter === tag} onClick={() => setActiveFilter(tag)}>
+            {tag}
+          </FilterChip>
         ))}
+      </Filters>
+
+      <ProjectsGrid layout>
+        <AnimatePresence mode="popLayout">
+          {visible.map((project, index) => {
+            const imageUrl = getImageUrl(project.image);
+            const hasLink = project.url && project.url !== '#';
+            return (
+              <Card
+                key={project.name}
+                layout
+                initial={{ opacity: 0, y: 24 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, scale: 0.9 }}
+                transition={{ duration: 0.4, ease: 'easeOut', delay: Math.min(index * 0.06, 0.4) }}
+              >
+                <Media $hasImage={!!imageUrl}>
+                  {imageUrl && <img src={imageUrl} alt={project.name} loading="lazy" />}
+                  <IndexBadge>{String(index + 1).padStart(2, '0')}</IndexBadge>
+                  {project.year && <YearBadge>{project.year}</YearBadge>}
+                  {project.featured && <FeaturedRibbon>★ {t('projects.featured', 'Featured')}</FeaturedRibbon>}
+                </Media>
+
+                <Body>
+                  <ProjectTitle>{project.name}</ProjectTitle>
+                  <ProjectDescription>{project.description}</ProjectDescription>
+                  <Tags>
+                    {(project.tags || []).map((tag, i) => (
+                      <Tag key={i}>{tag}</Tag>
+                    ))}
+                  </Tags>
+                  <Links>
+                    {hasLink && (
+                      <PrimaryLink href={project.url} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                        <ExternalIcon />
+                        {t('projects.viewProject')}
+                      </PrimaryLink>
+                    )}
+                    {project.github && (
+                      <GhostLink href={project.github} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                        <GithubIcon />
+                        {t('projects.viewCode')}
+                      </GhostLink>
+                    )}
+                  </Links>
+                </Body>
+              </Card>
+            );
+          })}
+        </AnimatePresence>
       </ProjectsGrid>
+
+      {visible.length === 0 && <EmptyState>{t('projects.empty', 'No projects match this filter yet.')}</EmptyState>}
     </ProjectsSection>
   );
 };
