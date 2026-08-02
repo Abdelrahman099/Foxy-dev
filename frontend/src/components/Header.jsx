@@ -1,4 +1,4 @@
-import React, { useContext, useState } from 'react';
+import React, { useContext, useState, useEffect } from 'react';
 import { Link ,NavLink} from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import styled from 'styled-components';
@@ -6,17 +6,41 @@ import { motion } from 'framer-motion';
 import { ThemeContext } from '../context/ThemeContext';
 import { LanguageContext } from '../context/LanguageContext';
 import HaloIcon from './HaloIcon';
+import BrandLogo from './BrandLogo';
 
 
+/* Smart-hide glassy navbar:
+   - at the very top: fully transparent, blends with the hero
+   - after scrolling: frosted glass (blur + translucent) with a soft border
+   - scrolling down hides it; any scroll up brings it back instantly */
 const HeaderContainer = styled(motion.header)`
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
-  background-color: var(--bg-primary);
-  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   z-index: 1000;
-  transition: background-color var(--transition-speed) ease;
+  background: ${({ $scrolled }) =>
+    $scrolled ? 'color-mix(in srgb, var(--bg-primary) 72%, transparent)' : 'transparent'};
+  backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(16px) saturate(1.5)' : 'none')};
+  -webkit-backdrop-filter: ${({ $scrolled }) => ($scrolled ? 'blur(16px) saturate(1.5)' : 'none')};
+  border-bottom: 1px solid ${({ $scrolled }) => ($scrolled ? 'var(--border)' : 'transparent')};
+  box-shadow: ${({ $scrolled }) => ($scrolled ? '0 10px 34px rgba(0, 0, 0, 0.25)' : 'none')};
+  transition: background 0.35s ease, backdrop-filter 0.35s ease, border-color 0.35s ease,
+    box-shadow 0.35s ease;
+
+  /* thin gradient glow line under the glass */
+  &::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -1px;
+    height: 1px;
+    background: var(--gradient-accent);
+    opacity: ${({ $scrolled }) => ($scrolled ? 0.35 : 0)};
+    transition: opacity 0.35s ease;
+    pointer-events: none;
+  }
 `;
 
 const NavContainer = styled.div`
@@ -29,13 +53,30 @@ const NavContainer = styled.div`
 `;
 
 const Logo = styled(Link)`
-  font-size: 1.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  font-size: 1.4rem;
   font-weight: 700;
+  font-family: 'Space Grotesk', 'Inter', sans-serif;
   color: var(--text-primary);
   transition: color var(--transition-speed) ease;
-  
+  direction: ltr;
+
+  svg {
+    flex-shrink: 0;
+    transition: transform 0.4s ease;
+  }
+
+  &:hover svg {
+    transform: translateY(-2px) rotate(-4deg);
+  }
+
   span {
-    color: var(--accent);
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
   }
 `;
 
@@ -134,44 +175,49 @@ const MobileNavLinkStyled = styled(NavLink)`
   }
 `;
 
-const headerVariants = {
-  hidden: { y: -100 },
-  visible: { 
-    y: 0,
-    transition: {
-      type: 'spring',
-      stiffness: 100,
-      damping: 20
-    }
-  }
-};
-
 const Header = () => {
   const { t } = useTranslation();
   const { darkMode, toggleTheme } = useContext(ThemeContext);
   const { language, toggleLanguage } = useContext(LanguageContext);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-  
+  const [hidden, setHidden] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
+
+  useEffect(() => {
+    let lastY = window.scrollY;
+    const onScroll = () => {
+      const y = window.scrollY;
+      setScrolled(y > 60);
+      // hide when scrolling down past the hero, reveal on any scroll up
+      setHidden(y > lastY && y > 180 && !mobileMenuOpen);
+      lastY = y;
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    return () => window.removeEventListener('scroll', onScroll);
+  }, [mobileMenuOpen]);
+
   const toggleMobileMenu = () => {
     setMobileMenuOpen(!mobileMenuOpen);
   };
-  
+
   return (
     <HeaderContainer
-      variants={headerVariants}
-      initial="hidden"
-      animate="visible"
+      $scrolled={scrolled}
+      initial={{ y: -100 }}
+      animate={{ y: hidden ? '-110%' : 0 }}
+      transition={{ type: 'spring', stiffness: 260, damping: 30 }}
     >
       <NavContainer>
         <Logo to="/">
-          Foxy<span>Dev</span>
+          <BrandLogo size={30} />
+          <span style={{ WebkitTextFillColor: 'initial', background: 'none', color: 'var(--text-primary)' }}>Backin</span><span>Front</span>
         </Logo>
-        
+
         <NavLinks>
           <NavLinkStyled to="/">{t('header.home')}</NavLinkStyled>
+          <NavLinkStyled to="/services">{t('header.services')}</NavLinkStyled>
           <NavLinkStyled to="/projects">{t('header.projects')}</NavLinkStyled>
           <NavLinkStyled to="/skills">{t('header.skills')}</NavLinkStyled>
-          <NavLinkStyled to="/education">{t('header.education')}</NavLinkStyled>
           <NavLinkStyled to="/contact">{t('header.contact')}</NavLinkStyled>
         </NavLinks>
         
@@ -220,14 +266,14 @@ const Header = () => {
           <MobileNavLinkStyled to="/" onClick={() => setMobileMenuOpen(false)}>
             {t('header.home')}
           </MobileNavLinkStyled>
+          <MobileNavLinkStyled to="/services" onClick={() => setMobileMenuOpen(false)}>
+            {t('header.services')}
+          </MobileNavLinkStyled>
           <MobileNavLinkStyled to="/projects" onClick={() => setMobileMenuOpen(false)}>
             {t('header.projects')}
           </MobileNavLinkStyled>
           <MobileNavLinkStyled to="/skills" onClick={() => setMobileMenuOpen(false)}>
             {t('header.skills')}
-          </MobileNavLinkStyled>
-          <MobileNavLinkStyled to="/education" onClick={() => setMobileMenuOpen(false)}>
-            {t('header.education')}
           </MobileNavLinkStyled>
           <MobileNavLinkStyled to="/contact" onClick={() => setMobileMenuOpen(false)}>
             {t('header.contact')}

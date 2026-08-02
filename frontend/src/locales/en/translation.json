@@ -1,10 +1,71 @@
 {
   "header": {
     "home": "Home",
-    "projects": "Projects",
+    "services": "Services",
+    "projects": "Work",
     "skills": "Skills",
     "education": "Education",
     "contact": "Contact"
+  },
+  "home": {
+    "eyebrow": "Full-Stack Developer & Systems Builder",
+    "titleA": "I take your business from the back…",
+    "titleB": "to the front.",
+    "subtitle": "Websites, CRM, LMS and ERP systems, automation and servers — I design, build and deploy the full stack so your business runs faster, sells more and never sleeps.",
+    "ctaServices": "Explore Services",
+    "ctaQuote": "Get a Free Quote",
+    "stats": {
+      "projects": "Projects Delivered",
+      "years": "Years of Experience",
+      "systems": "Service Lines",
+      "support": "Support"
+    },
+    "services": {
+      "eyebrow": "What I Do",
+      "title": "Everything your business needs to go digital",
+      "sub": "From a landing page to a full ERP — one developer, the whole stack, zero handoffs.",
+      "more": "Learn more"
+    },
+    "process": {
+      "eyebrow": "How I Work",
+      "title": "From idea to launch in 4 steps",
+      "s1": {
+        "title": "Discover",
+        "text": "We talk about your business, your goals and what success looks like. No tech jargon — just understanding the problem."
+      },
+      "s2": {
+        "title": "Design",
+        "text": "I map the solution: screens, flows and architecture. You approve everything before a single line of code."
+      },
+      "s3": {
+        "title": "Build",
+        "text": "Clean, modern code with weekly previews so you watch your product come to life — no surprises."
+      },
+      "s4": {
+        "title": "Deploy & Support",
+        "text": "I launch it on a fast, secure infrastructure and stay with you: updates, fixes and improvements."
+      }
+    },
+    "work": {
+      "eyebrow": "Proof, Not Promises",
+      "title": "Selected work",
+      "all": "See all projects"
+    },
+    "cta": {
+      "titleA": "Ready to move your business",
+      "titleB": "to the front?",
+      "text": "Tell me what you need — a website, a system, or just an idea. I'll reply within 24 hours with a plan and a clear price.",
+      "button": "Start Your Project"
+    }
+  },
+  "services2": {
+    "eyebrow": "Services",
+    "title": "What I can build",
+    "titleAccent": "for you",
+    "subtitle": "Every service below is something I've shipped for real clients — explained in plain words, so you know exactly what you're paying for.",
+    "ctaTitle": "Not sure which service you need?",
+    "ctaText": "Describe your problem in one message and I'll tell you exactly what fits — for free, no strings attached.",
+    "ctaButton": "Ask Me Anything"
   },
   "hero": {
     "greeting": "Hello, I'm",
@@ -13,17 +74,23 @@
   },
   "about": {
     "title": "About Me",
-    "description": "Passionate full-stack developer with expertise in modern web technologies. I create responsive, user-friendly applications with clean code and innovative solutions."
+    "description": "Full-stack developer specialized in building business systems — websites, CRM, LMS, ERP, automation and servers — with clean code and reliable delivery."
   },
   "projects": {
-    "title": "My Projects",
+    "title": "My Work",
     "eyebrow": "Selected Work",
-    "subtitle": "A collection of things I have designed, built and shipped.",
+    "subtitle": "A collection of things I have designed, built and shipped for real clients.",
     "all": "All",
     "featured": "Featured",
     "empty": "No projects match this filter yet.",
     "viewProject": "View Project",
-    "viewCode": "View Code"
+    "viewCode": "View Code",
+    "countries": {
+      "egypt": "Egypt",
+      "ksa": "Saudi Arabia",
+      "uae": "UAE — Dubai",
+      "usa": "USA"
+    }
   },
   "skills": {
     "title": "My Skills",
@@ -31,7 +98,9 @@
     "backend": "Backend Development",
     "database": "Database",
     "devops": "DevOps",
-    "mobile": "Mobile Development"
+    "mobile": "Mobile Development",
+    "eyebrow": "Tech Arsenal",
+    "subtitle": "The tools I use to take products from the back of the stack to the front of the screen."
   },
   "education": {
     "title": "Education",
@@ -43,15 +112,18 @@
     "present": "Present"
   },
   "contact": {
-    "title": "Get In Touch",
+    "title": "Let's Talk Business",
     "name": "Name",
     "email": "Email",
-    "message": "Message",
+    "message": "Tell me about your project",
     "send": "Send Message"
   },
   "footer": {
-    "rights": "All Rights Reserved",
-    "madeWith": "Made with"
+    "rights": "BackinFront — All Rights Reserved",
+    "madeWith": "Made with",
+    "tagline": "From the back… to the front. I build websites, business systems and the infrastructure they run on.",
+    "quickLinks": "Quick Links",
+    "contactTitle": "Contact"
   },
   "theme": {
     "light": "Light Mode",

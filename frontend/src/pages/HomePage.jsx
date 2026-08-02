@@ -1,546 +1,745 @@
-import React, { useState, useEffect } from 'react';
+import React, { useRef } from 'react';
 import { useTranslation } from 'react-i18next';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
+import styled, { keyframes } from 'styled-components';
+import { motion, useMotionValue, useSpring, useTransform } from 'framer-motion';
 import HaloButton from '../components/HaloButton';
-import HaloCard from '../components/HaloCard';
-import { fetchBasics, fetchEducation } from '../utils/api';
+import { Link } from 'react-router-dom';
+import TiltCard from '../components/TiltCard';
+import services from '../data/services';
+import projects from '../data/projects';
 import ContactPage from './ContactPage';
 
+/* ═══════════════════════ HERO ═══════════════════════ */
+
+const MotionLink = motion.create(Link);
+
 const HeroSection = styled.section`
-  height: 100vh;
+  min-height: calc(100vh - 80px);
+  display: grid;
+  grid-template-columns: 1.05fr 0.95fr;
+  align-items: center;
+  gap: 3rem;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 2rem;
+
+  @media (max-width: 968px) {
+    grid-template-columns: 1fr;
+    text-align: center;
+    padding-top: 3rem;
+  }
+`;
+
+const HeroCopy = styled(motion.div)`
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+  z-index: 2;
+
+  @media (max-width: 968px) {
+    align-items: center;
+  }
+`;
+
+const Eyebrow = styled(motion.p)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: var(--accent);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  padding: 0.45rem 1rem;
+  border-radius: 999px;
+  border: 1px solid var(--border);
+  background: var(--gradient-accent-soft);
+  width: fit-content;
+
+  &::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent);
+    box-shadow: 0 0 10px var(--accent);
+  }
+`;
+
+const HeroTitle = styled(motion.h1)`
+  font-size: clamp(2.6rem, 6vw, 4.2rem);
+  line-height: 1.08;
+  letter-spacing: -0.02em;
+`;
+
+const HeroSub = styled(motion.p)`
+  color: var(--text-secondary);
+  font-size: 1.15rem;
+  line-height: 1.9;
+  max-width: 540px;
+`;
+
+const HeroButtons = styled(motion.div)`
+  display: flex;
+  gap: 1rem;
+  flex-wrap: wrap;
+
+  @media (max-width: 968px) {
+    justify-content: center;
+  }
+`;
+
+const GhostButton = styled(Link)`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.75rem;
+  border-radius: 50px;
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  font-weight: 600;
+  transition: all var(--transition-speed) ease;
+
+  &:hover {
+    border-color: var(--accent);
+    color: var(--accent);
+    box-shadow: var(--glow);
+  }
+`;
+
+/* ─── 3D hero scene: floating browser + orbiting tech chips ─── */
+
+const chipFloat = keyframes`
+  0%, 100% { transform: translateZ(var(--z)) translateY(0); }
+  50%      { transform: translateZ(var(--z)) translateY(-12px); }
+`;
+
+const Scene = styled.div`
+  perspective: 1100px;
   display: flex;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  padding: 0 2rem;
+  min-height: 460px;
+
+  @media (max-width: 968px) {
+    min-height: 380px;
+  }
+`;
+
+const SceneInner = styled(motion.div)`
   position: relative;
+  transform-style: preserve-3d;
+  width: min(480px, 88vw);
+`;
+
+const BrowserCard = styled.div`
+  transform-style: preserve-3d;
+  border-radius: 16px;
+  background: rgba(12, 16, 31, 0.85);
+  border: 1px solid var(--border);
+  box-shadow: 0 40px 80px rgba(0, 0, 0, 0.55), var(--glow-2);
   overflow: hidden;
-`;
+  backdrop-filter: blur(6px);
 
-const HeroContent = styled(motion.div)`
-  max-width: 800px;
-  z-index: 2;
-`;
-
-const HeroGreeting = styled(motion.h2)`
-  font-size: 1.5rem;
-  color: var(--accent);
-  margin-bottom: 1rem;
-`;
-
-const HeroName = styled(motion.h1)`
-  font-size: 4rem;
-  margin-bottom: 1rem;
-  background: var(--gradient-accent);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  background-clip: text;
-  
-  @media (max-width: 768px) {
-    font-size: 3rem;
+  [data-theme='light'] & {
+    background: rgba(255, 255, 255, 0.9);
   }
 `;
 
-const HeroTitle = styled(motion.h3)`
-  font-size: 2rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  
-  @media (max-width: 768px) {
-    font-size: 1.5rem;
-  }
-`;
-
-const HeroDescription = styled(motion.p)`
-  font-size: 1.2rem;
-  color: var(--text-secondary);
-  margin-bottom: 2rem;
-  max-width: 600px;
-  margin-left: auto;
-  margin-right: auto;
-`;
-
-const ButtonContainer = styled(motion.div)`
+const BrowserBar = styled.div`
   display: flex;
-  gap: 1rem;
-  justify-content: center;
+  align-items: center;
+  gap: 7px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+  background: rgba(255, 255, 255, 0.03);
+
+  span {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+  }
+
+  i {
+    font-style: normal;
+    margin-inline-start: 10px;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    direction: ltr;
+  }
 `;
 
-const BackgroundCircle = styled(motion.div)`
+const CodeArea = styled.div`
+  padding: 1.2rem 1.4rem 1.6rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  direction: ltr;
+`;
+
+const CodeLine = styled(motion.div)`
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+
+  b {
+    font-family: ui-monospace, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--text-secondary);
+    width: 14px;
+    font-weight: 400;
+  }
+
+  span {
+    height: 10px;
+    border-radius: 5px;
+  }
+`;
+
+const Chip = styled.div`
   position: absolute;
-  border-radius: 50%;
-  background: radial-gradient(circle at center, var(--halo-color) 0%, transparent 70%);
-  z-index: 1;
+  padding: 0.5rem 1rem;
+  border-radius: 12px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--border);
+  box-shadow: ${(p) => (p.$v ? 'var(--glow-2)' : 'var(--glow)')};
+  animation: ${chipFloat} ${(p) => p.$dur || 4}s ease-in-out infinite;
+  animation-delay: ${(p) => p.$delay || 0}s;
+  white-space: nowrap;
+  direction: ltr;
 `;
 
-const floatingCircleVariants = {
-  animate: {
-    y: [0, -20, 0],
-    x: [0, 10, 0],
-    scale: [1, 1.1, 1],
-    transition: {
-      duration: 6,
-      repeat: Infinity,
-      repeatType: "reverse"
-    }
-  }
-};
+/* ═══════════════════ STATS ═══════════════════ */
 
-// Add a second variant for staggered animations
-const floatingCircleVariants2 = {
-  animate: {
-    y: [0, 30, 0],
-    x: [0, -15, 0],
-    scale: [1, 1.05, 1],
-    transition: {
-      duration: 8,
-      repeat: Infinity,
-      repeatType: "reverse"
-    }
-  }
-};
+const StatsBar = styled.div`
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 0 2rem 4rem;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
 
-// Add a third variant for different animation pattern
-const floatingCircleVariants3 = {
-  animate: {
-    y: [0, -100, 0],
-    x: [0, 200, 0],
-    scale: [1, 1.15, 1],
-    rotate: [0, 1, 0],
-    transition: {
-      duration: 15,
-      repeat: Infinity,
-      repeatType: "reverse"
-    }
+  @media (max-width: 768px) {
+    grid-template-columns: repeat(2, 1fr);
   }
-};
+`;
 
-const AboutSection = styled.section`
-  padding: 5rem 2rem;
+const Stat = styled(motion.div)`
+  text-align: center;
+  padding: 1.5rem 1rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
+
+  h3 {
+    font-size: 2rem;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    margin-top: 0.35rem;
+  }
+`;
+
+/* ═══════════════════ SERVICES STRIP ═══════════════════ */
+
+const Section = styled.section`
   max-width: 1200px;
   margin: 0 auto;
+  padding: 4rem 2rem;
 `;
 
-const SectionTitle = styled.h2`
-  font-size: 2.5rem;
+const SectionHead = styled.div`
   text-align: center;
   margin-bottom: 3rem;
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background-color: var(--accent);
+
+  p.eyebrow {
+    color: var(--accent);
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    font-size: 0.82rem;
+    margin-bottom: 0.8rem;
+  }
+
+  h2 {
+    font-size: clamp(1.9rem, 4vw, 2.6rem);
+  }
+
+  p.sub {
+    color: var(--text-secondary);
+    max-width: 560px;
+    margin: 1rem auto 0;
+    line-height: 1.8;
   }
 `;
 
-const AboutContent = styled.div`
+const ServicesGrid = styled(motion.div)`
   display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 3rem;
-  
-  @media (max-width: 768px) {
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1.4rem;
+`;
+
+const ServiceCardInner = styled(Link)`
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+  padding: 1.6rem;
+  height: 100%;
+  color: inherit;
+  transform-style: preserve-3d;
+
+  h3 {
+    font-size: 1.15rem;
+    color: var(--text-primary);
+    transform: translateZ(26px);
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 0.92rem;
+    line-height: 1.7;
+    flex: 1;
+  }
+
+  span.more {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 0.88rem;
+  }
+`;
+
+const MiniIcon = styled.div`
+  width: 44px;
+  height: 44px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateZ(34px);
+  background: ${(p) =>
+    p.$v
+      ? 'linear-gradient(135deg, rgba(122,92,255,0.22), rgba(122,92,255,0.07))'
+      : 'linear-gradient(135deg, rgba(0,217,255,0.20), rgba(0,217,255,0.05))'};
+  border: 1px solid ${(p) => (p.$v ? 'rgba(122,92,255,0.35)' : 'rgba(0,217,255,0.30)')};
+
+  svg {
+    width: 22px;
+    height: 22px;
+    color: ${(p) => (p.$v ? 'var(--accent-2)' : 'var(--accent)')};
+  }
+`;
+
+/* ═══════════════════ PROCESS ═══════════════════ */
+
+const ProcessGrid = styled.div`
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1.4rem;
+  position: relative;
+
+  @media (max-width: 968px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (max-width: 560px) {
     grid-template-columns: 1fr;
   }
 `;
 
-const AboutText = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 1.5rem;
-  line-height: 1.9;
-  padding: 1rem;
-`;
-
-const AboutImage = styled(motion.div)`
+const ProcessStep = styled(motion.div)`
+  padding: 1.8rem 1.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border);
+  background: var(--card-bg);
   position: relative;
-  border-radius: 15px;
-  height: 400px;
-  overflow: visible;
+  overflow: hidden;
 
-  img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: inherit;
-    display: block;
-    position: relative;
-    z-index: 1;
-  }
-
-  @property --angle {
-    syntax: "<angle>";
-    initial-value: 0deg;
-    inherits: false;
-  }
-
-  &::after {
-    content: "";
+  &::before {
+    content: '${(p) => p.$n}';
     position: absolute;
-    inset: -3px; /* سمك البوردر */
-    border-radius: inherit;
-    background: conic-gradient(from var(--angle), black 90%, red);
-    z-index: 0;
-    animation: spin 3s linear infinite;
+    top: -12px;
+    inset-inline-end: 6px;
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 4.6rem;
+    font-weight: 700;
+    opacity: 0.07;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
+    opacity: 0.35;
   }
 
-  @keyframes spin {
-    from { --angle: 0deg; }
-    to { --angle: 360deg; }
+  h3 {
+    font-size: 1.1rem;
+    margin-bottom: 0.6rem;
   }
-`;
 
-
-
-// Define the custom animation path for the image
-const imageAnimationVariants = {
-  animate: {
-    x: [0, 180, 180, 0, 0],
-    y: [0, 0, 50, 50, 0],
-    transition: {
-      duration: 8,
-      times: [0, 0.25, 0.5, 0.75, 1],
-      repeat: Infinity,
-      repeatType: "loop"
-    }
-  }
-};
-
-// Add keyframes for border animation
-const BorderAnimation = styled.div`
-  @keyframes borderAnimation {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
+  p {
+    color: var(--text-secondary);
+    font-size: 0.9rem;
+    line-height: 1.7;
   }
 `;
 
-// Add styled components for education section
-const EducationSection = styled.section`
-  padding: 5rem 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-`;
+/* ═══════════════════ FEATURED WORK ═══════════════════ */
 
-const EducationTitle = styled.h2`
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 3rem;
-  position: relative;
-  
-  &:after {
-    content: '';
-    position: absolute;
-    bottom: -0.5rem;
-    left: 50%;
-    transform: translateX(-50%);
-    width: 50px;
-    height: 3px;
-    background-color: var(--accent);
-  }
-`;
-
-const EducationGrid = styled.div`
+const WorkGrid = styled(motion.div)`
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-  gap: 2rem;
+  gap: 1.5rem;
 `;
 
-const EducationCard = styled(HaloCard)`
-  padding: 1.5rem;
-  transition: transform 0.3s ease;
-  
-  &:hover {
-    transform: translateY(-5px);
+const WorkCardBody = styled.a`
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  color: inherit;
+
+  .thumb {
+    height: 180px;
+    background: var(--gradient-accent-soft);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.5s ease;
+    }
+  }
+
+  &:hover .thumb img {
+    transform: scale(1.06);
+  }
+
+  .body {
+    padding: 1.3rem 1.4rem 1.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.6rem;
+    flex: 1;
+
+    h3 {
+      font-size: 1.15rem;
+      color: var(--text-primary);
+    }
+
+    p {
+      color: var(--text-secondary);
+      font-size: 0.9rem;
+      line-height: 1.7;
+      flex: 1;
+    }
+  }
+
+  .tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+
+    span {
+      font-size: 0.72rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: 999px;
+      border: 1px solid var(--border);
+      color: var(--text-secondary);
+    }
   }
 `;
 
-const EducationInstitution = styled.h3`
-  font-size: 1.3rem;
-  color: var(--text-primary);
-  margin-bottom: 0.5rem;
-`;
+/* ═══════════════════ CTA BANNER ═══════════════════ */
 
-const EducationDegree = styled.h4`
-  font-size: 1.1rem;
-  color: var(--accent);
-  margin-bottom: 1rem;
-`;
-
-const EducationPeriod = styled.p`
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-`;
-
-const EducationGPA = styled.p`
-  font-size: 0.9rem;
-  color: var(--text-secondary);
-  margin-bottom: 1rem;
-`;
-
-const EducationCourses = styled.div`
-  margin-top: 1rem;
-`;
-
-const CoursesTitle = styled.h5`
-  font-size: 1rem;
-  margin-bottom: 0.5rem;
-  color: var(--text-primary);
-`;
-
-const CourseTags = styled.div`
-  display: flex;
-  flex-wrap: wrap;
-  gap: 0.5rem;
-`;
-
-const CourseTag = styled.span`
-  background-color: var(--bg-secondary);
-  color: var(--text-primary);
-  padding: 0.3rem 0.8rem;
-  border-radius: 50px;
-  font-size: 0.8rem;
-`;
-
-const LoadingSpinner = styled(motion.div)`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  min-height: 200px;
-  
-  svg {
-    width: 50px;
-    height: 50px;
-    color: var(--accent);
-  }
-`;
-
-const ErrorMessage = styled.div`
+const CtaBanner = styled(motion.div)`
+  max-width: 1100px;
+  margin: 2rem auto 0;
+  padding: 3.5rem 2.5rem;
+  border-radius: 24px;
   text-align: center;
-  color: #e74c3c;
-  padding: 2rem;
+  position: relative;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  background:
+    radial-gradient(30rem 20rem at 20% 0%, rgba(122, 92, 255, 0.18), transparent 60%),
+    radial-gradient(30rem 20rem at 85% 100%, rgba(0, 217, 255, 0.15), transparent 60%),
+    var(--card-bg);
+
+  h2 {
+    font-size: clamp(1.8rem, 4vw, 2.6rem);
+    margin-bottom: 1rem;
+  }
+
+  p {
+    color: var(--text-secondary);
+    max-width: 540px;
+    margin: 0 auto 2rem;
+    line-height: 1.8;
+  }
 `;
 
-const heroVariants = {
-  hidden: { opacity: 0 },
-  visible: {
-    opacity: 1,
-    transition: {
-      staggerChildren: 0.2,
-      delayChildren: 0.3
-    }
-  }
+/* ─── variants ─── */
+const stagger = { hidden: {}, visible: { transition: { staggerChildren: 0.09, delayChildren: 0.1 } } };
+const rise = {
+  hidden: { opacity: 0, y: 26 },
+  visible: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 90, damping: 15 } },
 };
 
-const itemVariants = {
-  hidden: { y: 20, opacity: 0 },
-  visible: {
-    y: 0,
-    opacity: 1,
-    transition: {
-      type: "spring",
-      stiffness: 100,
-      damping: 10
-    }
-  }
+const MINI_ICONS = {
+  website: 'M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z',
+  deployment: 'M5 12h14M12 5l7 7-7 7',
+  crm: 'M17 20h5v-2a4 4 0 00-3-3.87M9 20H4v-2a4 4 0 013-3.87m6-1.13a4 4 0 10-4-4 4 4 0 004 4z',
+  lms: 'M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253',
+  erp: 'M9 17v-6h6v6m-9 4h12a2 2 0 002-2V7l-7-5-7 5v12a2 2 0 002 2z',
+  automation: 'M13 10V3L4 14h7v7l9-11h-7z',
+  vps: 'M5 12H3l9-9 9 9h-2M5 12v7a2 2 0 002 2h10a2 2 0 002-2v-7',
 };
 
-const spinnerVariants = {
-  animate: {
-    rotate: 360,
-    transition: {
-      repeat: Infinity,
-      duration: 1,
-      ease: "linear"
-    }
-  }
+/* ─── 3D hero scene component ─── */
+const HeroScene = () => {
+  const ref = useRef(null);
+  const rx = useMotionValue(-8);
+  const ry = useMotionValue(14);
+  const srx = useSpring(rx, { stiffness: 60, damping: 14 });
+  const sry = useSpring(ry, { stiffness: 60, damping: 14 });
+  const rotateX = useTransform(srx, (v) => `${v}deg`);
+  const rotateY = useTransform(sry, (v) => `${v}deg`);
+
+  const onMove = (e) => {
+    const rect = ref.current?.getBoundingClientRect();
+    if (!rect) return;
+    const px = (e.clientX - rect.left) / rect.width;
+    const py = (e.clientY - rect.top) / rect.height;
+    ry.set(6 + (px - 0.5) * 22);
+    rx.set(-2 + (0.5 - py) * 18);
+  };
+
+  const onLeave = () => {
+    rx.set(-8);
+    ry.set(14);
+  };
+
+  const lines = [
+    ['48%', 'var(--accent-2)'],
+    ['72%', 'var(--accent)'],
+    ['60%', 'var(--text-secondary)'],
+    ['82%', 'var(--accent-2)'],
+    ['38%', 'var(--accent)'],
+    ['66%', 'var(--text-secondary)'],
+  ];
+
+  return (
+    <Scene ref={ref} onMouseMove={onMove} onMouseLeave={onLeave}>
+      <SceneInner style={{ rotateX, rotateY }}>
+        <BrowserCard>
+          <BrowserBar>
+            <span style={{ background: '#ff5f57' }} />
+            <span style={{ background: '#febc2e' }} />
+            <span style={{ background: '#28c840' }} />
+            <i>backinfront.dev — building…</i>
+          </BrowserBar>
+          <CodeArea>
+            {lines.map(([w, c], i) => (
+              <CodeLine
+                key={i}
+                initial={{ opacity: 0, x: -14 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: 0.5 + i * 0.14 }}
+              >
+                <b>{i + 1}</b>
+                <span style={{ width: w, background: c, opacity: 0.75 }} />
+              </CodeLine>
+            ))}
+          </CodeArea>
+        </BrowserCard>
+
+        <Chip style={{ '--z': '90px', top: '-8%', insetInlineStart: '-6%' }} $dur={4.5}>⚛ React</Chip>
+        <Chip style={{ '--z': '120px', top: '18%', insetInlineEnd: '-10%' }} $v $dur={5} $delay={0.6}>🖥 CRM</Chip>
+        <Chip style={{ '--z': '70px', bottom: '22%', insetInlineStart: '-12%' }} $v $dur={4.2} $delay={1.1}>⚙ ERP</Chip>
+        <Chip style={{ '--z': '110px', bottom: '-6%', insetInlineEnd: '4%' }} $dur={5.4} $delay={0.3}>🚀 Deploy</Chip>
+        <Chip style={{ '--z': '95px', top: '52%', insetInlineEnd: '-16%' }} $dur={4.8} $delay={1.5}>🎓 LMS</Chip>
+      </SceneInner>
+    </Scene>
+  );
 };
+
+/* ═══════════════════ PAGE ═══════════════════ */
 
 const HomePage = () => {
   const { t } = useTranslation();
-  const [basics, setBasics] = useState(null);
-  const [education, setEducation] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        setLoading(true);
-        const [basicsData, educationData] = await Promise.all([
-          fetchBasics(),
-          fetchEducation()
-        ]);
-        setBasics(basicsData);
-        setEducation(educationData);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch data:', error);
-        setError('Failed to load data. Please try again later.');
-        setLoading(false);
-      }
-    };
+  const featured = projects.filter((p) => p.featured).slice(0, 3);
+  const featuredList = featured.length ? featured : projects.slice(0, 3);
 
-    getData();
-  }, []);
-
-  if (loading) {
-    return (
-      <HeroSection>
-        <LoadingSpinner
-          variants={spinnerVariants}
-          animate="animate"
-        >
-          <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15" />
-          </svg>
-        </LoadingSpinner>
-      </HeroSection>
-    );
-  }
-
-  if (error) {
-    return (
-      <HeroSection>
-        <ErrorMessage>{error}</ErrorMessage>
-      </HeroSection>
-    );
-  }
-  
-  // Format date function
-  const formatDate = (dateString) => {
-    const date = new Date(dateString);
-    return date.toLocaleDateString('en-US', { year: 'numeric', month: 'long' });
-  };
-  
   return (
     <div>
- 
+      {/* HERO */}
       <HeroSection>
-        <BackgroundCircle
-          variants={floatingCircleVariants}
-          animate="animate"
-          style={{
-            width: '300px',
-            height: '300px',
-            top: '10%',
-            left: '5%',
-          }}
-        />
-        <BackgroundCircle 
-          variants={floatingCircleVariants2}
-          animate="animate"
-          style={{ 
-            width: '400px', 
-            height: '400px', 
-            top: '10%', 
-            left: '10%',
-            opacity: 0.5
-          }}
-        />
-        <BackgroundCircle 
-          variants={floatingCircleVariants3}
-          animate="animate"
-          style={{ 
-            width: '300px', 
-            height: '300px', 
-            bottom: '10%', 
-            right: '10%',
-            opacity: 0.3
-          }}
-        />
-      
-        <HeroContent
-          variants={heroVariants}
-          initial="hidden"
-          animate="visible"
-        >
-          <HeroGreeting variants={itemVariants}>
-            {t('hero.greeting')}
-          </HeroGreeting>
-          <HeroName variants={itemVariants} className="gradient-text">
-            {basics?.name || "Foxy Developer"}
-          </HeroName>
-          <HeroTitle variants={itemVariants}>
-            { t('hero.title')}
+        <HeroCopy variants={stagger} initial="hidden" animate="visible">
+          <Eyebrow variants={rise}>{t('home.eyebrow')}</Eyebrow>
+          <HeroTitle variants={rise}>
+            {t('home.titleA')}{' '}
+            <span className="gradient-text">{t('home.titleB')}</span>
           </HeroTitle>
-          <HeroDescription variants={itemVariants}>
-            { t('about.description')}
-          </HeroDescription>
-          <ButtonContainer variants={itemVariants}>
-            <HaloButton as="a" href="/projects">
-              {t('hero.cta')}
+          <HeroSub variants={rise}>{t('home.subtitle')}</HeroSub>
+          <HeroButtons variants={rise}>
+            <HaloButton as={MotionLink} to="/services">
+              {t('home.ctaServices')}
             </HaloButton>
-          </ButtonContainer>
-        </HeroContent>
+            <GhostButton to="/contact">{t('home.ctaQuote')} →</GhostButton>
+          </HeroButtons>
+        </HeroCopy>
+        <HeroScene />
       </HeroSection>
-      
-      <AboutSection id="about">
-        <SectionTitle>{t('about.title')}</SectionTitle>
-        <AboutContent>
-          <AboutText>
-            {basics?.description?.[document.documentElement.lang === 'ar' ? 'ar' : 'en']}
-          </AboutText>
-          <AboutImage 
-            
-        
-            animate="animate"
-            transition={{ type: "spring", stiffness: 300, damping: 10 }}
+
+      {/* STATS */}
+      <StatsBar>
+        {[
+          [t('home.stats.projects'), '20+'],
+          [t('home.stats.years'), '4+'],
+          [t('home.stats.systems'), '7'],
+          [t('home.stats.support'), '24/7'],
+        ].map(([label, value], i) => (
+          <Stat
+            key={label}
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: i * 0.08 }}
           >
-            <img src="https://media.istockphoto.com/id/2212360504/photo/holographic-ui-ux-display-icons-of-ux-ui-designer-creative-planning-data-visualization-web.jpg?s=1024x1024&w=is&k=20&c=skd_SMOtTMujQh9SX6oawwdSDeuPhmkxXmVqxUWLPrA=" alt="Passionate Developer" />
-          </AboutImage>
-        </AboutContent>
-      </AboutSection>
-      
-      {/* Add Education Section */}
-      <EducationSection id="education">
-        <EducationTitle>My Educational Background</EducationTitle>
-        <EducationGrid>
-          {education.map((edu, index) => (
-            <EducationCard key={index} delay={index * 0.1}>
-              <EducationInstitution>{edu.institution}</EducationInstitution>
-              <EducationDegree>{edu.studyType} in {edu.area}</EducationDegree>
-              <EducationPeriod>
-                {formatDate(edu.startDate)} - {formatDate(edu.endDate)}
-              </EducationPeriod>
-              {edu.gpa && (
-                <EducationGPA>GPA: {edu.gpa}</EducationGPA>
-              )}
-              <EducationCourses>
-                <CoursesTitle>Key Courses</CoursesTitle>
-                <CourseTags>
-                  {edu.courses.slice(0, 5).map((course, i) => (
-                    <CourseTag key={i}>{course}</CourseTag>
-                  ))}
-                </CourseTags>
-              </EducationCourses>
-            </EducationCard>
+            <h3>{value}</h3>
+            <p>{label}</p>
+          </Stat>
+        ))}
+      </StatsBar>
+
+      {/* SERVICES STRIP */}
+      <Section id="services">
+        <SectionHead>
+          <p className="eyebrow">{t('home.services.eyebrow')}</p>
+          <h2>{t('home.services.title')}</h2>
+          <p className="sub">{t('home.services.sub')}</p>
+        </SectionHead>
+        <ServicesGrid variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05 }}>
+          {services.map((s) => {
+            return (
+              <motion.div key={s.id} variants={rise}>
+                <TiltCard maxTilt={7}>
+                  <ServiceCardInner to={`/services#${s.id}`}>
+                    <MiniIcon $v={s.accent === 'violet'}>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.7} d={MINI_ICONS[s.id]} />
+                      </svg>
+                    </MiniIcon>
+                    <ServiceText service={s} />
+                    <span className="more">{t('home.services.more')} →</span>
+                  </ServiceCardInner>
+                </TiltCard>
+              </motion.div>
+            );
+          })}
+        </ServicesGrid>
+      </Section>
+
+      {/* PROCESS */}
+      <Section>
+        <SectionHead>
+          <p className="eyebrow">{t('home.process.eyebrow')}</p>
+          <h2>{t('home.process.title')}</h2>
+        </SectionHead>
+        <ProcessGrid>
+          {[1, 2, 3, 4].map((n, i) => (
+            <ProcessStep
+              key={n}
+              $n={`0${n}`}
+              initial={{ opacity: 0, y: 24 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: i * 0.1 }}
+            >
+              <h3>{t(`home.process.s${n}.title`)}</h3>
+              <p>{t(`home.process.s${n}.text`)}</p>
+            </ProcessStep>
           ))}
-        </EducationGrid>
-      </EducationSection>
+        </ProcessGrid>
+      </Section>
 
+      {/* FEATURED WORK */}
+      <Section>
+        <SectionHead>
+          <p className="eyebrow">{t('home.work.eyebrow')}</p>
+          <h2>{t('home.work.title')}</h2>
+        </SectionHead>
+        <WorkGrid variants={stagger} initial="hidden" whileInView="visible" viewport={{ once: true, amount: 0.05 }}>
+          {featuredList.map((p) => (
+            <motion.div key={p.name} variants={rise}>
+              <TiltCard maxTilt={6}>
+                <WorkCardBody href={p.url || undefined} target={p.url ? '_blank' : undefined} rel="noopener noreferrer">
+                  <div className="thumb">
+                    {p.image && <img src={p.image} alt={p.name} loading="lazy" />}
+                  </div>
+                  <div className="body">
+                    <h3>{p.name}</h3>
+                    <p>{p.description}</p>
+                    <div className="tags">
+                      {p.tags.slice(0, 4).map((tag) => (
+                        <span key={tag}>{tag}</span>
+                      ))}
+                    </div>
+                  </div>
+                </WorkCardBody>
+              </TiltCard>
+            </motion.div>
+          ))}
+        </WorkGrid>
+        <div style={{ textAlign: 'center', marginTop: '2.5rem' }}>
+          <GhostButton to="/projects">{t('home.work.all')} →</GhostButton>
+        </div>
+      </Section>
 
- <div>
-   <ContactPage/>
-  </div>      
+      {/* CTA BANNER */}
+      <Section>
+        <CtaBanner
+          initial={{ opacity: 0, scale: 0.96 }}
+          whileInView={{ opacity: 1, scale: 1 }}
+          viewport={{ once: true }}
+        >
+          <h2>
+            {t('home.cta.titleA')} <span className="gradient-text">{t('home.cta.titleB')}</span>
+          </h2>
+          <p>{t('home.cta.text')}</p>
+          <HaloButton as={MotionLink} to="/contact">
+            {t('home.cta.button')}
+          </HaloButton>
+        </CtaBanner>
+      </Section>
+
+      {/* CONTACT */}
+      <ContactPage />
     </div>
+  );
+};
 
-
-
- 
+/* Renders the service title/desc in the active language */
+const ServiceText = ({ service }) => {
+  const { i18n } = useTranslation();
+  const c = i18n.language?.startsWith('ar') ? service.ar : service.en;
+  return (
+    <>
+      <h3>{c.title}</h3>
+      <p>{c.tagline}</p>
+    </>
   );
 };
 

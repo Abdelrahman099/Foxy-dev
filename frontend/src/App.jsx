@@ -5,6 +5,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
 import Preloader from './components/Preloader';
 import HomePage from './pages/HomePage';
+import ServicesPage from './pages/ServicesPage';
 import ProjectsPage from './pages/ProjectsPage';
 import SkillsPage from './pages/SkillsPage';
 import EducationPage from './pages/EducationPage';
@@ -25,6 +26,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Layout />}>
               <Route index element={<HomePage />} />
+              <Route path="services" element={<ServicesPage />} />
               <Route path="projects" element={<ProjectsPage />} />
               <Route path="skills" element={<SkillsPage />} />
               <Route path="education" element={<EducationPage />} />

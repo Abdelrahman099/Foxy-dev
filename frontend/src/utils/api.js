@@ -12,22 +12,15 @@ const API_URL = isDevelopment ? LOCAL_URL : PRODUCTION_URL;
 // Helper function to convert image paths to proper URLs
 export const getImageUrl = (imagePath) => {
   if (!imagePath) return null;
-  
+
   // If it's already a full URL, return it as is
   if (imagePath.startsWith('http://') || imagePath.startsWith('https://')) {
     return imagePath;
   }
-  
-  // Extract the image name from the path (remove leading '/images/')
-  const imageName = imagePath.replace(/^\/images\//, '');
-  
-  // For debugging
-  console.log('Original image path:', imagePath);
-  console.log('Extracted image name:', imageName);
-  console.log('Full image URL:', `${API_URL}/images/${imageName}`);
-  
-  // Construct the proper API URL for the image
-  return `${API_URL}/images/${imageName}`;
+
+  // Local paths (e.g. "/images/x.png") are served straight from
+  // frontend/public — fast, and no backend dependency for images.
+  return imagePath;
 };
 
 // ... existing code ...

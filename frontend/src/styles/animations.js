@@ -70,7 +70,7 @@ export const GlobalStyles = createGlobalStyle`
 
   /* Gradient text effect */
   .gradient-text {
-    background: linear-gradient(90deg, var(--accent) 0%, #9c27b0 100%);
+    background: var(--gradient-accent);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;

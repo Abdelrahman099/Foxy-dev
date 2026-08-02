@@ -4,6 +4,8 @@ import styled from 'styled-components';
 import { motion, AnimatePresence } from 'framer-motion';
 import { projects as projectsData } from '../data/projects';
 import { getImageUrl } from '../utils/api';
+import TiltCard from '../components/TiltCard';
+import WorkGlobe, { GLOBE_COUNTRIES } from '../components/WorkGlobe';
 
 /* ============================ Layout ============================ */
 const ProjectsSection = styled.section`
@@ -43,6 +45,54 @@ const SubTitle = styled.p`
   font-size: 1.05rem;
 `;
 
+/* ============================ Globe ============================ */
+const GlobeSection = styled.div`
+  margin: 1.5rem 0 0.5rem;
+`;
+
+const CountryChips = styled.div`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+  justify-content: center;
+  margin-top: 1.6rem;
+`;
+
+const CountryChip = styled.button`
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  border: 1px solid ${({ $active }) => ($active ? 'transparent' : 'var(--border)')};
+  background: ${({ $active }) => ($active ? 'var(--gradient-accent)' : 'var(--card-bg)')};
+  color: ${({ $active }) => ($active ? '#fff' : 'var(--text-secondary)')};
+  padding: 0.5rem 1.15rem;
+  border-radius: 999px;
+  font-size: 0.88rem;
+  font-weight: 600;
+  transition: all 0.25s ease;
+  box-shadow: ${({ $active }) => ($active ? 'var(--glow-2)' : 'none')};
+
+  .flag {
+    font-size: 1.05rem;
+    line-height: 1;
+  }
+
+  .count {
+    font-size: 0.7rem;
+    font-weight: 700;
+    padding: 0.1rem 0.5rem;
+    border-radius: 999px;
+    background: ${({ $active }) => ($active ? 'rgba(255,255,255,0.22)' : 'var(--bg-secondary)')};
+    color: ${({ $active }) => ($active ? '#fff' : 'var(--accent-2)')};
+  }
+
+  &:hover {
+    transform: translateY(-2px);
+    color: ${({ $active }) => ($active ? '#fff' : 'var(--accent)')};
+    border-color: ${({ $active }) => ($active ? 'transparent' : 'var(--accent)')};
+  }
+`;
+
 /* ============================ Filters ============================ */
 const Filters = styled.div`
   display: flex;
@@ -80,41 +130,14 @@ const ProjectsGrid = styled(motion.div)`
   }
 `;
 
-const Card = styled(motion.article)`
+/* inner content of each 3D tilt card — children float at
+   different depths (translateZ) above the card surface */
+const CardInner = styled.article`
   position: relative;
   display: flex;
   flex-direction: column;
-  background: var(--card-bg);
-  border: 1px solid var(--border);
-  border-radius: 18px;
-  overflow: hidden;
-  box-shadow: var(--card-shadow);
-  transition: border-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-
-  /* animated gradient glow border on hover */
-  &::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: inherit;
-    padding: 1px;
-    background: var(--gradient-accent);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    opacity: 0;
-    transition: opacity 0.35s ease;
-    pointer-events: none;
-  }
-
-  &:hover {
-    transform: translateY(-8px);
-    box-shadow: var(--card-shadow), var(--glow-2);
-  }
-
-  &:hover::before {
-    opacity: 1;
-  }
+  height: 100%;
+  transform-style: preserve-3d;
 `;
 
 const Media = styled.div`
@@ -122,6 +145,7 @@ const Media = styled.div`
   height: 190px;
   overflow: hidden;
   background: var(--gradient-accent-soft);
+  transform-style: preserve-3d;
 
   img {
     width: 100%;
@@ -130,13 +154,19 @@ const Media = styled.div`
     transition: transform 0.6s ease;
   }
 
-  ${Card}:hover & img {
+  ${CardInner}:hover & img {
     transform: scale(1.07);
   }
 
   /* fallback glyph when no image */
   &::after {
-    content: '🦊';
+    content: '</>';
+    font-family: 'Space Grotesk', monospace;
+    font-weight: 700;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    background-clip: text;
+    -webkit-text-fill-color: transparent;
     position: absolute;
     inset: 0;
     display: ${({ $hasImage }) => ($hasImage ? 'none' : 'flex')};
@@ -149,6 +179,7 @@ const Media = styled.div`
 
 const IndexBadge = styled.span`
   position: absolute;
+  transform: translateZ(34px);
   top: 12px;
   left: 12px;
   z-index: 2;
@@ -166,6 +197,7 @@ const IndexBadge = styled.span`
 
 const YearBadge = styled.span`
   position: absolute;
+  transform: translateZ(34px);
   top: 12px;
   right: 12px;
   z-index: 2;
@@ -181,6 +213,7 @@ const YearBadge = styled.span`
 
 const FeaturedRibbon = styled.span`
   position: absolute;
+  transform: translateZ(40px);
   bottom: 12px;
   left: 12px;
   z-index: 2;
@@ -200,10 +233,12 @@ const Body = styled.div`
   flex-direction: column;
   flex-grow: 1;
   padding: 1.4rem 1.4rem 1.6rem;
+  transform-style: preserve-3d;
 `;
 
 const ProjectTitle = styled.h3`
   font-size: 1.35rem;
+  transform: translateZ(22px);
   margin-bottom: 0.6rem;
   color: var(--text-primary);
 `;
@@ -294,6 +329,15 @@ const GithubIcon = () => (
 const ProjectsPage = () => {
   const { t } = useTranslation();
   const [activeFilter, setActiveFilter] = useState('all');
+  const [activeCountry, setActiveCountry] = useState(null);
+
+  const countryCounts = useMemo(() => {
+    const counts = {};
+    projectsData.forEach((p) => {
+      if (p.country) counts[p.country] = (counts[p.country] || 0) + 1;
+    });
+    return counts;
+  }, []);
 
   // featured projects float to the top
   const sorted = useMemo(
@@ -310,13 +354,13 @@ const ProjectsPage = () => {
       .slice(0, 10);
   }, []);
 
-  const visible = useMemo(
-    () =>
-      activeFilter === 'all'
-        ? sorted
-        : sorted.filter((p) => (p.tags || []).includes(activeFilter)),
-    [activeFilter, sorted]
-  );
+  const visible = useMemo(() => {
+    let list = activeFilter === 'all'
+      ? sorted
+      : sorted.filter((p) => (p.tags || []).includes(activeFilter));
+    if (activeCountry) list = list.filter((p) => p.country === activeCountry);
+    return list;
+  }, [activeFilter, activeCountry, sorted]);
 
   return (
     <ProjectsSection>
@@ -325,6 +369,27 @@ const ProjectsPage = () => {
         <SectionTitle className="gradient-text">{t('projects.title')}</SectionTitle>
         <SubTitle>{t('projects.subtitle', 'A collection of things I have designed, built and shipped.')}</SubTitle>
       </Header>
+
+      {/* ====== 3D globe — projects around the world ====== */}
+      <GlobeSection>
+        <WorkGlobe activeCountry={activeCountry} />
+        <CountryChips>
+          <CountryChip $active={!activeCountry} onClick={() => setActiveCountry(null)}>
+            🌍 {t('projects.all', 'All')}
+          </CountryChip>
+          {Object.entries(GLOBE_COUNTRIES).map(([id, meta]) => (
+            <CountryChip
+              key={id}
+              $active={activeCountry === id}
+              onClick={() => setActiveCountry(activeCountry === id ? null : id)}
+            >
+              <span className="flag">{meta.flag}</span>
+              {t(`projects.countries.${id}`, id.toUpperCase())}
+              <span className="count">{countryCounts[id] || 0}</span>
+            </CountryChip>
+          ))}
+        </CountryChips>
+      </GlobeSection>
 
       <Filters>
         <FilterChip $active={activeFilter === 'all'} onClick={() => setActiveFilter('all')}>
@@ -343,14 +408,16 @@ const ProjectsPage = () => {
             const imageUrl = getImageUrl(project.image);
             const hasLink = project.url && project.url !== '#';
             return (
-              <Card
+              <TiltCard
                 key={project.name}
+                maxTilt={8}
                 layout
                 initial={{ opacity: 0, y: 24 }}
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.9 }}
                 transition={{ duration: 0.4, ease: 'easeOut', delay: Math.min(index * 0.06, 0.4) }}
               >
+                <CardInner>
                 <Media $hasImage={!!imageUrl}>
                   {imageUrl && <img src={imageUrl} alt={project.name} loading="lazy" />}
                   <IndexBadge>{String(index + 1).padStart(2, '0')}</IndexBadge>
@@ -381,7 +448,8 @@ const ProjectsPage = () => {
                     )}
                   </Links>
                 </Body>
-              </Card>
+                </CardInner>
+              </TiltCard>
             );
           })}
         </AnimatePresence>

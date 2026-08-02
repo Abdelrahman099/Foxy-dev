@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import styled, { keyframes } from 'styled-components';
 import { motion, AnimatePresence, useMotionValue, animate, useTransform } from 'framer-motion';
+import BrandLogo from './BrandLogo';
 
 /* ============================================================
    ReactBits-style 3D Preloader — "Building the experience"
@@ -60,8 +61,8 @@ const Overlay = styled(motion.div)`
     inset: 0;
     pointer-events: none;
     background:
-      radial-gradient(45rem 45rem at 18% 8%, rgba(255, 94, 108, 0.16), transparent 60%),
-      radial-gradient(42rem 42rem at 85% 92%, rgba(124, 92, 255, 0.20), transparent 60%);
+      radial-gradient(45rem 45rem at 18% 8%, rgba(122, 92, 255, 0.18), transparent 60%),
+      radial-gradient(42rem 42rem at 85% 92%, rgba(0, 217, 255, 0.14), transparent 60%);
   }
 `;
 
@@ -72,8 +73,8 @@ const Grid = styled.div`
   pointer-events: none;
   opacity: 0.5;
   background-image:
-    linear-gradient(rgba(124, 92, 255, 0.10) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124, 92, 255, 0.10) 1px, transparent 1px);
+    linear-gradient(rgba(0, 217, 255, 0.08) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.08) 1px, transparent 1px);
   background-size: 44px 44px;
   animation: ${gridMove} 3s linear infinite;
   -webkit-mask-image: radial-gradient(circle at 50% 40%, black, transparent 75%);
@@ -126,10 +127,10 @@ const Face = styled.div`
   border: 1.5px solid rgba(255, 255, 255, 0.18);
   border-radius: 16px;
   background:
-    linear-gradient(135deg, rgba(255, 94, 108, 0.55) 0%, rgba(124, 92, 255, 0.55) 100%);
+    linear-gradient(135deg, rgba(122, 92, 255, 0.55) 0%, rgba(0, 217, 255, 0.45) 100%);
   box-shadow:
     inset 0 0 30px rgba(255, 255, 255, 0.12),
-    0 0 24px rgba(124, 92, 255, 0.35);
+    0 0 24px rgba(0, 217, 255, 0.30);
   backdrop-filter: blur(2px);
   transform: ${(p) => p.$t};
 `;
@@ -184,8 +185,8 @@ const Line = styled.div`
   white-space: pre-wrap;
   word-break: break-word;
 
-  .p { color: #ff6b7f; }        /* prompt */
-  .k { color: #9b7bff; }        /* keyword */
+  .p { color: #00d9ff; }        /* prompt */
+  .k { color: #7a5cff; }        /* keyword */
   .ok { color: #4ade80; }       /* success */
 `;
 
@@ -270,11 +271,11 @@ const CountUp = ({ to = 100, duration = 2.6 }) => {
 
 /* ---------- terminal typing engine ---------- */
 const SCRIPT = [
-  { p: '$', text: ' npx create foxydev-experience', k: [] },
-  { text: '  ✓ initializing modules', ok: true },
-  { text: '  ✓ compiling components', ok: true },
+  { p: '$', text: ' npx create backinfront-experience', k: [] },
+  { text: '  ✓ booting the backend', ok: true },
+  { text: '  ✓ crafting the frontend', ok: true },
   { text: '  ✓ optimizing 3D assets', ok: true },
-  { text: '  ▲ deploying to the web', ok: false },
+  { text: '  ▲ moving you to the front…', ok: false },
 ];
 
 const Typewriter = ({ onComplete }) => {
@@ -333,7 +334,7 @@ const Typewriter = ({ onComplete }) => {
 /* ---------- main ---------- */
 const Preloader = ({ minDuration = 2.6, onDone }) => {
   const [visible, setVisible] = useState(true);
-  const word = 'FoxyDev';
+  const word = 'BackinFront';
   const letters = useMemo(() => word.split(''), [word]);
   const startedAt = useRef(performance.now());
 
@@ -356,7 +357,8 @@ const Preloader = ({ minDuration = 2.6, onDone }) => {
     onDone?.();
   };
 
-  const faces = ['</>', '{ }', '( )', '#!', '▲', 'Fx'];
+  const logo = <BrandLogo size={58} />;
+  const faces = [logo, '</>', '{ }', logo, '( )', '▲'];
   const faceT = [
     'rotateY(0deg) translateZ(65px)',
     'rotateY(90deg) translateZ(65px)',
@@ -408,7 +410,7 @@ const Preloader = ({ minDuration = 2.6, onDone }) => {
               <Dot $c="#ff5f57" />
               <Dot $c="#febc2e" />
               <Dot $c="#28c840" />
-              <b>foxydev — build</b>
+              <b>backinfront — build</b>
             </TerminalBar>
             <Typewriter onComplete={finish} />
           </Terminal>
@@ -417,7 +419,7 @@ const Preloader = ({ minDuration = 2.6, onDone }) => {
             {letters.map((c, i) => (
               <Letter
                 key={`${c}-${i}`}
-                data-accent={i >= 4}
+                data-accent={i >= 6}
                 aria-hidden
                 initial={{ opacity: 0, y: 18, filter: 'blur(10px)' }}
                 animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}

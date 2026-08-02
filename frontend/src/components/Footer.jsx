@@ -1,9 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
 import { useTranslation } from 'react-i18next';
 import { NavLink } from 'react-router-dom';
-import { fetchBasics } from '../utils/api';
 
 
 const FooterContainer = styled.footer`
@@ -103,33 +102,17 @@ const iconVariants = {
 const Footer = () => {
   const currentYear = new Date().getFullYear();
   const { t } = useTranslation();
-  const [basics, setBasics] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-  
-  useEffect(() => {
-    const getBasics = async () => {
-      try {
-        setLoading(true);
-        const data = await fetchBasics();
-        setBasics(data);
-        setLoading(false);
-      } catch (error) {
-        console.error('Failed to fetch basic profile data:', error);
-        setError('Failed to load profile data. Please try again later.');
-        setLoading(false);
-      }
-    };
-  
-    getBasics();
-  }, []);
-  
+
   return (
     <FooterContainer>
       <FooterContent>
         <FooterSection>
-          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Foxy Dev</FooterTitle>
-          <p>Full Stack Developer specializing in modern web technologies and creating responsive, user-friendly applications.</p>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>
+            <span style={{ direction: 'ltr', display: 'inline-block' }}>
+              Backin<span className="gradient-text">Front</span>
+            </span>
+          </FooterTitle>
+          <p>{t('footer.tagline')}</p>
           <SocialLinks>
             <SocialIcon 
               href="https://github.com/foxydev" 
@@ -168,19 +151,20 @@ const Footer = () => {
         </FooterSection>
         
         <FooterSection>
-          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Quick Links</FooterTitle>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>{t('footer.quickLinks')}</FooterTitle>
           <FooterLink to="/">{t('header.home')}</FooterLink>
+          <FooterLink to="/services">{t('header.services')}</FooterLink>
           <FooterLink to="/projects">{t('header.projects')}</FooterLink>
           <FooterLink to="/skills">{t('header.skills')}</FooterLink>
           <FooterLink to="/education">{t('header.education')}</FooterLink>
           <FooterLink to="/contact">{t('header.contact')}</FooterLink>
         </FooterSection>
-        
+
         <FooterSection>
-          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>Contact</FooterTitle>
-          <p>{basics?.email}</p>
-          <p>Phone: {basics?.phone}</p>
-          <p>Location: {basics?.location.city}, {basics?.location.country}</p>
+          <FooterTitle dir={document.documentElement.lang === 'ar' ? 'rtl' : 'ltr'}>{t('footer.contactTitle')}</FooterTitle>
+          <p>abdelrahman.osama.099@gmail.com</p>
+          <p dir="ltr">+20 100 992 3849</p>
+          <p>Cairo, Egypt</p>
         </FooterSection>
       </FooterContent>
       

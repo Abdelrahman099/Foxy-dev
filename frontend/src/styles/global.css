@@ -1,54 +1,36 @@
 :root {
+  /* ═══════════════════════════════════════════════════════
+     BackinFront — Design Tokens
+     Concept: "Back" = deep dark space, "Front" = glowing cyan.
+     The brand gradient travels back (violet) → front (cyan).
+     Dark cinematic is the DEFAULT theme.
+     ═══════════════════════════════════════════════════════ */
+
+  /* ===== Dark Theme (default) ===== */
+  --bg-primary-dark: #05070f;
+  --bg-secondary-dark: #0b0e1c;
+  --text-primary-dark: #eef1ff;
+  --text-secondary-dark: #9aa3c0;
+  --accent-dark: #00d9ff;            /* cyan — the "Front" */
+  --accent-hover-dark: #5ce7ff;
+  --accent-2-dark: #7a5cff;          /* violet — the "Back" */
+  --border-dark: #1c2138;
+  --card-bg-dark: #0c101f;
+  --card-shadow-dark: 0 16px 40px rgba(0, 0, 0, 0.5);
+
   /* ===== Light Theme ===== */
-  --bg-primary-light: #f7f7fb;
-  --bg-secondary-light: #eef0f7;
-  --text-primary-light: #16161d;
-  --text-secondary-light: #5b5f6e;
-  --accent-light: #ff5e6c;
-  --accent-hover-light: #ff3d4f;
-  --accent-2-light: #7c5cff;
-  --border-light: #e2e4ee;
+  --bg-primary-light: #f6f8fc;
+  --bg-secondary-light: #eceff7;
+  --text-primary-light: #0d1120;
+  --text-secondary-light: #525a75;
+  --accent-light: #0092c7;
+  --accent-hover-light: #00a8e0;
+  --accent-2-light: #6a4df0;
+  --border-light: #dde1ef;
   --card-bg-light: #ffffff;
-  --card-shadow-light: 0 8px 24px rgba(23, 23, 40, 0.08);
+  --card-shadow-light: 0 8px 24px rgba(13, 17, 32, 0.08);
 
-  /* ===== Dark Theme ===== */
-  --bg-primary-dark: #0a0a12;
-  --bg-secondary-dark: #12121d;
-  --text-primary-dark: #f4f5fb;
-  --text-secondary-dark: #a2a6bb;
-  --accent-dark: #ff6b7f;
-  --accent-hover-dark: #ff8794;
-  --accent-2-dark: #9b7bff;
-  --border-dark: #23233a;
-  --card-bg-dark: #14141f;
-  --card-shadow-dark: 0 12px 32px rgba(0, 0, 0, 0.45);
-
-  /* ===== Active tokens (default = Light) ===== */
-  --bg-primary: var(--bg-primary-light);
-  --bg-secondary: var(--bg-secondary-light);
-  --text-primary: var(--text-primary-light);
-  --text-secondary: var(--text-secondary-light);
-  --accent: var(--accent-light);
-  --accent-hover: var(--accent-hover-light);
-  --accent-2: var(--accent-2-light);
-  --border: var(--border-light);
-  --card-bg: var(--card-bg-light);
-  --card-shadow: var(--card-shadow-light);
-
-  /* ===== Gradients & Glow (game / cinematic feel) ===== */
-  --gradient-accent: linear-gradient(120deg, var(--accent) 0%, var(--accent-2) 100%);
-  --gradient-accent-soft: linear-gradient(120deg, rgba(255, 94, 108, 0.15) 0%, rgba(124, 92, 255, 0.15) 100%);
-  --glow: 0 0 28px rgba(255, 94, 108, 0.35);
-  --glow-2: 0 0 28px rgba(124, 92, 255, 0.35);
-
-  /* ===== Animation ===== */
-  --transition-speed: 0.3s;
-  --halo-color-light: rgba(124, 92, 255, 0.18);
-  --halo-color-dark: rgba(124, 92, 255, 0.30);
-  --halo-color: var(--halo-color-light);
-}
-
-[data-theme='dark'] {
+  /* ===== Active tokens (default = Dark, cinematic) ===== */
   --bg-primary: var(--bg-primary-dark);
   --bg-secondary: var(--bg-secondary-dark);
   --text-primary: var(--text-primary-dark);
@@ -59,7 +41,34 @@
   --border: var(--border-dark);
   --card-bg: var(--card-bg-dark);
   --card-shadow: var(--card-shadow-dark);
+
+  /* ===== Brand gradient: Back (violet) → Front (cyan) ===== */
+  --gradient-accent: linear-gradient(110deg, var(--accent-2) 0%, var(--accent) 100%);
+  --gradient-accent-soft: linear-gradient(110deg, rgba(122, 92, 255, 0.14) 0%, rgba(0, 217, 255, 0.14) 100%);
+  --glow: 0 0 32px rgba(0, 217, 255, 0.30);
+  --glow-2: 0 0 32px rgba(122, 92, 255, 0.32);
+
+  /* ===== Animation ===== */
+  --transition-speed: 0.3s;
+  --halo-color-light: rgba(0, 146, 199, 0.14);
+  --halo-color-dark: rgba(0, 217, 255, 0.16);
   --halo-color: var(--halo-color-dark);
+}
+
+[data-theme='light'] {
+  --bg-primary: var(--bg-primary-light);
+  --bg-secondary: var(--bg-secondary-light);
+  --text-primary: var(--text-primary-light);
+  --text-secondary: var(--text-secondary-light);
+  --accent: var(--accent-light);
+  --accent-hover: var(--accent-hover-light);
+  --accent-2: var(--accent-2-light);
+  --border: var(--border-light);
+  --card-bg: var(--card-bg-light);
+  --card-shadow: var(--card-shadow-light);
+  --halo-color: var(--halo-color-light);
+  --glow: 0 0 28px rgba(0, 146, 199, 0.20);
+  --glow-2: 0 0 28px rgba(106, 77, 240, 0.20);
 }
 
 * {
@@ -82,7 +91,7 @@ body {
   overflow-x: hidden;
 }
 
-/* Ambient cinematic background — subtle color pools + faint grid */
+/* Ambient cinematic background — nebula pools + faint grid */
 body::before {
   content: '';
   position: fixed;
@@ -90,9 +99,9 @@ body::before {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(50rem 50rem at 12% -5%, rgba(255, 94, 108, 0.10), transparent 60%),
-    radial-gradient(45rem 45rem at 95% 8%, rgba(124, 92, 255, 0.12), transparent 60%),
-    radial-gradient(40rem 40rem at 50% 110%, rgba(124, 92, 255, 0.08), transparent 60%);
+    radial-gradient(52rem 52rem at 15% -8%, rgba(122, 92, 255, 0.12), transparent 60%),
+    radial-gradient(46rem 46rem at 98% 12%, rgba(0, 217, 255, 0.10), transparent 60%),
+    radial-gradient(44rem 44rem at 50% 115%, rgba(122, 92, 255, 0.09), transparent 60%);
 }
 
 body::after {
@@ -103,8 +112,8 @@ body::after {
   pointer-events: none;
   opacity: 0.5;
   background-image:
-    linear-gradient(rgba(124, 92, 255, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(124, 92, 255, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(0, 217, 255, 0.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(0, 217, 255, 0.035) 1px, transparent 1px);
   background-size: 44px 44px;
   -webkit-mask-image: radial-gradient(circle at 50% 30%, black, transparent 80%);
   mask-image: radial-gradient(circle at 50% 30%, black, transparent 80%);
