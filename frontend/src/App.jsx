@@ -1,8 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { ThemeProvider } from './context/ThemeContext';
 import { LanguageProvider } from './context/LanguageContext';
 import Layout from './components/Layout';
+import Preloader from './components/Preloader';
 import HomePage from './pages/HomePage';
 import ProjectsPage from './pages/ProjectsPage';
 import SkillsPage from './pages/SkillsPage';
@@ -13,10 +14,13 @@ import './styles/global.css';
 import GlobalStyles from './styles/animations';
 
 function App() {
+  const [loading, setLoading] = useState(true);
+
   return (
     <ThemeProvider>
       <LanguageProvider>
         <GlobalStyles />
+        {loading && <Preloader minDuration={2.8} onDone={() => setLoading(false)} />}
         <BrowserRouter>
           <Routes>
             <Route path="/" element={<Layout />}>
