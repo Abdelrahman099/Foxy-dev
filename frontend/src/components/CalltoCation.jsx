@@ -10,8 +10,15 @@ const CallToActionContainer = styled.div`
     margin-top: 2rem;
     position: fixed;
     bottom: 20px;
-    right:40px;
+    right: 40px;
     border-radius: 50%;
+    z-index: 99;
+
+    @media (max-width: 768px) {
+      right: 16px;
+      bottom: 16px;
+      padding: 1.2rem;
+    }
 
 
     &:before {

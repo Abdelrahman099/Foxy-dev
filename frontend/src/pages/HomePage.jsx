@@ -27,6 +27,8 @@ const HeroSection = styled.section`
     grid-template-columns: 1fr;
     text-align: center;
     padding-top: 3rem;
+    overflow-x: hidden;
+      padding: 0.5rem;
   }
 `;
 
@@ -115,7 +117,7 @@ const chipFloat = keyframes`
 `;
 
 const Scene = styled.div`
-  perspective: 1100px;
+  perspective: 4000px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -123,6 +125,9 @@ const Scene = styled.div`
 
   @media (max-width: 968px) {
     min-height: 380px;
+    max-width: 87%;
+    
+
   }
 `;
 

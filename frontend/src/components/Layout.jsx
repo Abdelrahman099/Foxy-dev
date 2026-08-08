@@ -8,12 +8,18 @@ const LayoutContainer = styled.div`
   display: flex;
   flex-direction: column;
   min-height: 100vh;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 `;
 
 const Main = styled.main`
   flex: 1;
   margin-top: 80px; /* Header height */
   padding-bottom: 2rem;
+  width: 100%;
+  max-width: 100vw;
+  overflow-x: hidden;
 `;
 
 const Layout = () => {
