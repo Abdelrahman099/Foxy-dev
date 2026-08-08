@@ -72,16 +72,18 @@ const WorkGlobe = ({ activeCountry = null }) => {
     window.addEventListener('resize', onResize);
 
     const countryIds = Object.keys(GLOBE_COUNTRIES);
+    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2);
 
     const globe = createGlobe(canvas, {
-      devicePixelRatio: 2,
-      width: width * 2,
-      height: width * 2,
+      devicePixelRatio: dpr,
+      width: width * dpr,
+      height: width * dpr,
       phi: phiRef.current,
       theta: thetaRef.current,
       dark: 1,
       diffuse: 1.2,
-      mapSamples: 18000,
+      mapSamples: isMobile ? 10000 : 18000,
       mapBrightness: 5.2,
       baseColor: [0.32, 0.28, 0.52],     // violet dots
       markerColor: [0, 0.85, 1],          // cyan markers

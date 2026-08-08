@@ -287,7 +287,7 @@ const Typewriter = ({ onComplete }) => {
   useEffect(() => {
     let raf;
     let last = performance.now();
-    const speed = 26; // ms per char
+    const speed = 10; // ms per char (faster typing)
 
     const tick = (now) => {
       if (idx.current >= SCRIPT.length) {
@@ -332,7 +332,7 @@ const Typewriter = ({ onComplete }) => {
 };
 
 /* ---------- main ---------- */
-const Preloader = ({ minDuration = 2.6, onDone }) => {
+const Preloader = ({ minDuration = 0.2, onDone }) => {
   const [visible, setVisible] = useState(true);
   const word = 'BackinFront';
   const letters = useMemo(() => word.split(''), [word]);
@@ -348,7 +348,7 @@ const Preloader = ({ minDuration = 2.6, onDone }) => {
 
   const finish = () => {
     const elapsed = (performance.now() - startedAt.current) / 1000;
-    const wait = Math.max(0, minDuration - elapsed) * 1000 + 500;
+    const wait = Math.max(0, (minDuration - elapsed) * 1000);
     setTimeout(() => setVisible(false), wait);
   };
 
