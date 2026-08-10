@@ -418,36 +418,36 @@ const ProjectsPage = () => {
                 transition={{ duration: 0.4, ease: 'easeOut', delay: Math.min(index * 0.06, 0.4) }}
               >
                 <CardInner>
-                <Media $hasImage={!!imageUrl}>
-                  {imageUrl && <img src={imageUrl} alt={project.name} loading="lazy" />}
-                  <IndexBadge>{String(index + 1).padStart(2, '0')}</IndexBadge>
-                  {project.year && <YearBadge>{project.year}</YearBadge>}
-                  {project.featured && <FeaturedRibbon>★ {t('projects.featured', 'Featured')}</FeaturedRibbon>}
-                </Media>
+                  <Media $hasImage={!!imageUrl}>
+                    {imageUrl && <img src={imageUrl} alt={project.name} loading="lazy" />}
+                    <IndexBadge>{String(index + 1).padStart(2, '0')}</IndexBadge>
+                    {project.year && <YearBadge>{project.year}</YearBadge>}
+                    {project.featured && <FeaturedRibbon>★ {t('projects.featured', 'Featured')}</FeaturedRibbon>}
+                  </Media>
 
-                <Body>
-                  <ProjectTitle>{project.name}</ProjectTitle>
-                  <ProjectDescription>{project.description}</ProjectDescription>
-                  <Tags>
-                    {(project.tags || []).map((tag, i) => (
-                      <Tag key={i}>{tag}</Tag>
-                    ))}
-                  </Tags>
-                  <Links>
-                    {hasLink && (
-                      <PrimaryLink href={project.url} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                        <ExternalIcon />
-                        {t('projects.viewProject')}
-                      </PrimaryLink>
-                    )}
-                    {project.github && (
-                      <GhostLink href={project.github} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
-                        <GithubIcon />
-                        {t('projects.viewCode')}
-                      </GhostLink>
-                    )}
-                  </Links>
-                </Body>
+                  <Body>
+                    <ProjectTitle>{project.name}</ProjectTitle>
+                    <ProjectDescription>{project.description}</ProjectDescription>
+                    <Tags>
+                      {(project.tags || []).map((tag, i) => (
+                        <Tag key={i}>{tag}</Tag>
+                      ))}
+                    </Tags>
+                    <Links>
+                      {hasLink && (
+                        <PrimaryLink href={project.url} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <ExternalIcon />
+                          {t('projects.viewProject')}
+                        </PrimaryLink>
+                      )}
+                      {project.github && (
+                        <GhostLink href={project.github} target="_blank" rel="noopener noreferrer" whileHover={{ scale: 1.03 }} whileTap={{ scale: 0.97 }}>
+                          <GithubIcon />
+                          {t('projects.viewCode')}
+                        </GhostLink>
+                      )}
+                    </Links>
+                  </Body>
                 </CardInner>
               </TiltCard>
             );

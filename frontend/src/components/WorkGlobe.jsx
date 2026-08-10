@@ -10,9 +10,9 @@ import createGlobe from 'cobe';
 
 export const GLOBE_COUNTRIES = {
   egypt: { flag: '🇪🇬', location: [30.04, 31.24] },   // Cairo
-  ksa:   { flag: '🇸🇦', location: [24.71, 46.68] },   // Riyadh
-  uae:   { flag: '🇦🇪', location: [25.2, 55.27] },    // Dubai
-  usa:   { flag: '🇺🇸', location: [40.71, -74.01] },  // New York
+  ksa: { flag: '🇸🇦', location: [24.71, 46.68] },   // Riyadh
+  uae: { flag: '🇦🇪', location: [25.2, 55.27] },    // Dubai
+  usa: { flag: '🇺🇸', location: [40.71, -74.01] },  // New York
 };
 
 const Stage = styled.div`
@@ -65,25 +65,34 @@ const WorkGlobe = ({ activeCountry = null }) => {
     const canvas = canvasRef.current;
     if (!canvas) return;
 
-    let width = canvas.offsetWidth || 440;
-    const onResize = () => {
-      width = canvas.offsetWidth || width;
-    };
-    window.addEventListener('resize', onResize);
-
     const countryIds = Object.keys(GLOBE_COUNTRIES);
-    const isMobile = typeof window !== 'undefined' && window.innerWidth < 768;
-    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.25 : 2);
+    const isMobile = (window.innerWidth || 1024) < 768;
+    const dpr = Math.min(window.devicePixelRatio || 1, isMobile ? 1.5 : 2);
+
+    /* cobe renders through phenomenon, which sizes the drawing buffer as
+       `canvas.clientWidth * devicePixelRatio`. The width/height we hand to
+       cobe become the shader's resolution uniform, so they MUST match that
+       buffer exactly — otherwise the sphere is drawn at the wrong scale and
+       gets clipped. Keep this value as the single source of truth. */
+    let buffer = (canvas.clientWidth || 440) * dpr;
+    const measure = () => {
+      buffer = (canvas.clientWidth || 440) * dpr;
+    };
+
+    // ResizeObserver also catches the first real layout pass, so the globe
+    // self-corrects if it mounted before the container had a size.
+    const ro = new ResizeObserver(measure);
+    ro.observe(canvas);
 
     const globe = createGlobe(canvas, {
       devicePixelRatio: dpr,
-      width: width * dpr,
-      height: width * dpr,
+      width: buffer,
+      height: buffer,
       phi: phiRef.current,
       theta: thetaRef.current,
       dark: 1,
       diffuse: 1.2,
-      mapSamples: isMobile ? 10000 : 18000,
+      mapSamples: isMobile ? 12000 : 18000,
       mapBrightness: 5.2,
       baseColor: [0.32, 0.28, 0.52],     // violet dots
       markerColor: [0, 0.85, 1],          // cyan markers
@@ -114,8 +123,8 @@ const WorkGlobe = ({ activeCountry = null }) => {
 
         state.phi = phiRef.current;
         state.theta = thetaRef.current;
-        state.width = width * 2;
-        state.height = width * 2;
+        state.width = buffer;
+        state.height = buffer;
 
         // grow the marker of the selected country
         const active = activeRef.current;
@@ -150,7 +159,7 @@ const WorkGlobe = ({ activeCountry = null }) => {
 
     return () => {
       globe.destroy();
-      window.removeEventListener('resize', onResize);
+      ro.disconnect();
       canvas.removeEventListener('pointerdown', onDown);
       window.removeEventListener('pointermove', onMove);
       window.removeEventListener('pointerup', onUp);
