@@ -98,10 +98,10 @@ const WorkGlobe = ({ activeCountry = null }) => {
       markerColor: [0, 0.85, 1],          // cyan markers
       glowColor: [0.34, 0.26, 0.7],       // violet atmosphere
       opacity: 0.92,
-      markers: countryIds.map((id) => ({
-        location: GLOBE_COUNTRIES[id].location,
-        size: 0.07,
-      })),
+      markers: [
+        ...countryIds.map((id) => ({ location: GLOBE_COUNTRIES[id].location, size: 0.045 })),
+        ...countryIds.map((id) => ({ location: GLOBE_COUNTRIES[id].location, size: 0 }))
+      ],
       onRender: (state) => {
         // NOTE: only refs in here — never closure consts that may
         // not exist on the first synchronous frame.
@@ -126,12 +126,19 @@ const WorkGlobe = ({ activeCountry = null }) => {
         state.width = buffer;
         state.height = buffer;
 
-        // grow the marker of the selected country
+        // NOTE: cobe bug workaround: in cobe's onRender, uniform 'C' is set to
+        // state.markers.length instead of length * 2. Since the shader steps by 2,
+        // it only renders half the array. We pair every marker with a dummy size:0
+        // marker so all real markers are fully rendered.
         const active = activeRef.current;
-        state.markers = countryIds.map((id) => ({
+        const realMarkers = countryIds.map((id) => ({
           location: GLOBE_COUNTRIES[id].location,
-          size: id === active ? 0.13 : 0.07,
+          size: id === active ? 0.09 : 0.045,
         }));
+        state.markers = [
+          ...realMarkers,
+          ...realMarkers.map((m) => ({ ...m, size: 0 }))
+        ];
       },
     });
 
